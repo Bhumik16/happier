@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "948155745931",
+    "project_id": "happier-7cc4a",
+    "storage_bucket": "happier-7cc4a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948155745931:android:c6f45222f19d936a7e368e",
+        "android_client_info": {
+          "package_name": "com.example.happier_meditation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948155745931-ri3cft8pjhptrt00i3co6hrpheojltjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.happier_meditation",
+            "certificate_hash": "6cbf58da42fe1c432256616f4c9c93481cc602d6"
+          }
+        },
+        {
+          "client_id": "948155745931-66u8k02qnuh7lvfq4v4o8mfvv8roj9au.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlnvVdrGuua56T8lFevEodMz9wGGUCiGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948155745931-66u8k02qnuh7lvfq4v4o8mfvv8roj9au.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

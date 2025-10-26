@@ -1,0 +1,33 @@
+class AppRoutes {
+  static const String splash = '/';
+  static const String login = '/login';
+  static const String main = '/main';
+  static const String profile = '/profile';
+  static const String settings = '/settings';
+  static const String account = '/account';
+  static const String subscription = '/subscription';
+  static const String notifications = '/notifications';
+  static const String downloadsSettings = '/downloads-settings';
+  static const String appearance = '/appearance';
+  static const String courseDetail = '/course-detail';
+  static const String unifiedPlayer = '/unified-player';
+  static const String videoPlayer = '/video-player';
+  static const String audioPlayer = '/audio-player';
+  static const String podcastDetail = '/podcast-detail';
+  static const String podcastEpisodeDetail = '/podcast-episode-detail';
+  static const String podcastAudioPlayer = '/podcast-audio-player';
+  static const String wisdomDetail = '/wisdom-detail';
+  static const String sleepDetail = '/sleep-detail';
+  static const String sleepAudioPlayer = '/sleep-audio-player';
+  static const String shortsVideoPlayer = '/shorts-video-player';
+  static const String collectionDetail = '/collection-detail';
+  static const String favoritesList = '/favorites-list';
+  static const String profileFavorites = '/profile-favorites';
+  static const String premiumUpgrade = '/premium-upgrade';
+  static const String milestones = '/milestones';
+  static const String downloads = '/downloads';
+  static const String history = '/history';
+  static const String userOnboarding = '/user-onboarding';
+  static const String chatbot = '/chatbot';
+  static const String search = '/search';
+}

@@ -1,0 +1,153 @@
+name: happier_meditation
+description: "A professional meditation app for mindfulness and wellness"
+
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ==================== 
+  # CORE UI
+  # ====================
+  cupertino_icons: ^1.0.8
+  
+  # ==================== 
+  # STATE MANAGEMENT
+  # ====================
+  get: ^4.6.6                        # GetX for state management & navigation
+  
+  # ==================== 
+  # DEPENDENCY INJECTION
+  # ====================
+  get_it: ^7.7.0                     # Service locator pattern
+  
+  # ==================== 
+  # FIREBASE BACKEND
+  # ====================
+  firebase_core: ^3.8.1              # Firebase initialization
+  firebase_auth: ^5.3.3              # Authentication
+  google_sign_in: ^6.2.1              # Google sign in (stable version)
+  cloud_firestore: ^5.5.2            # Cloud database
+  firebase_storage: ^12.3.6          # File storage
+  firebase_analytics: ^11.3.4        # Analytics
+  firebase_crashlytics: ^4.1.4       # Crash reporting
+  
+  # ==================== 
+  # LOCAL DATABASE
+  # ====================
+  hive: ^2.2.3                       # NoSQL local database
+  hive_flutter: ^1.1.0               # Hive Flutter integration
+  
+  # ==================== 
+  # LOCAL STORAGE
+  # ====================
+  shared_preferences: ^2.3.3         # Key-value storage
+  path_provider: ^2.1.5              # File system paths
+  permission_handler: ^11.0.1        # Storage permissions
+  
+  # ==================== 
+  # AUDIO PLAYER
+  # ====================
+  just_audio: ^0.9.40                # Audio playback
+  audio_service: ^0.18.15            # Background audio
+  audio_session: ^0.1.21             # Audio session management
+  
+  # ==================== 
+  # VIDEO PLAYER
+  # ====================
+  video_player: ^2.9.2               # Video playback
+  chewie: ^1.8.5                     # Video player UI
+  
+  # ==================== 
+  # NETWORKING & API
+  # ====================
+  dio: ^4.0.6                        # HTTP client
+  connectivity_plus: ^6.1.1          # Network status
+  http: ^1.2.0                       # HTTP requests (for Cloudinary & API calls)
+  url_launcher: ^6.2.2               # Launch URLs
+  google_generative_ai: ^0.4.3       # ✅ ADDED - Gemini AI for chatbot
+  
+  # ==================== 
+  # ENVIRONMENT VARIABLES
+  # ====================
+  flutter_dotenv: ^5.1.0             # Load .env files
+  
+  # ==================== 
+  # UI COMPONENTS
+  # ====================
+  flutter_svg: ^2.0.10               # SVG images
+  lottie: ^3.1.2                     # Lottie animations
+  cached_network_image: ^3.4.1       # Image caching
+  shimmer: ^3.0.0                    # Loading effect
+  google_fonts: ^6.2.1               # Custom fonts
+  flutter_animate: ^4.5.0            # Advanced animations
+  smooth_page_indicator: ^1.2.0+3    # Page indicators
+  
+  # ==================== 
+  # CHARTS & PROGRESS
+  # ====================
+  fl_chart: ^0.69.2                  # Charts for statistics
+  percent_indicator: ^4.2.3          # Progress indicators
+  
+  # ==================== 
+  # UTILITIES
+  # ====================
+  intl: ^0.19.0                      # Internationalization
+  logger: ^2.4.0                     # Production logging
+  uuid: ^4.5.1                       # Unique ID generation
+  package_info_plus: 9.0.0           # App version info
+  
+  # ==================== 
+  # NOTIFICATIONS
+  # ====================
+  flutter_local_notifications: ^18.0.1  # Local notifications
+  
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # ==================== 
+  # CODE QUALITY
+  # ====================
+  flutter_lints: ^5.0.0              # Linting rules
+  
+  # ==================== 
+  # CODE GENERATION
+  # ====================
+  hive_generator: ^2.0.1             # Hive model generation
+  build_runner: ^2.4.13              # Code generation runner
+
+# ==================== 
+# FLUTTER CONFIGURATION
+# ====================
+flutter:
+  uses-material-design: true
+  
+  # Assets Configuration
+  assets:
+    - .env                            # Environment variables
+    - assets/images/
+    - assets/icons/
+    - assets/fonts/
+    - assets/animations/
+    - assets/videos/
+    - assets/audios/
+
+  # Custom Fonts Configuration (Optional - remove if you don't have Poppins fonts)
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #         weight: 400
+  #       - asset: assets/fonts/Poppins-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Poppins-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 700
