@@ -9,7 +9,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// COURSE DETAIL VIEW
 /// ====================
-/// 
+///
 /// Shows course overview, teacher info, and sessions list
 
 class CourseDetailView extends StatelessWidget {
@@ -19,7 +19,7 @@ class CourseDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CourseDetailController>();
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -27,9 +27,7 @@ class CourseDetailView extends StatelessWidget {
           body: Obx(() {
             if (controller.isLoading) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: theme.accentColor,
-                ),
+                child: CircularProgressIndicator(color: theme.accentColor),
               );
             }
 
@@ -46,10 +44,7 @@ class CourseDetailView extends StatelessWidget {
                     const SizedBox(height: 16),
                     Text(
                       controller.errorMessage,
-                      style: TextStyle(
-                        color: theme.textPrimary,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(color: theme.textPrimary, fontSize: 16),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 16),
@@ -99,14 +94,18 @@ class CourseDetailView extends StatelessWidget {
                         backgroundColor: Colors.black54,
                         child: IconButton(
                           icon: Icon(
-                            controller.isCourseFavorite ? Icons.favorite : Icons.favorite_border,
-                            color: controller.isCourseFavorite ? Colors.red : Colors.white,
+                            controller.isCourseFavorite
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: controller.isCourseFavorite
+                                ? Colors.red
+                                : Colors.white,
                           ),
                           onPressed: controller.toggleCourseFavorite,
                         ),
                       ),
                     ),
-                    
+
                     // ✅ DOWNLOAD BUTTON - WITH STATUS
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -115,7 +114,7 @@ class CourseDetailView extends StatelessWidget {
                         child: _buildDownloadButton(controller),
                       ),
                     ),
-                    
+
                     // SHARE BUTTON
                     Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -135,10 +134,7 @@ class CourseDetailView extends StatelessWidget {
                         ? Stack(
                             fit: StackFit.expand,
                             children: [
-                              Image.asset(
-                                course.imageUrl!,
-                                fit: BoxFit.cover,
-                              ),
+                              Image.asset(course.imageUrl!, fit: BoxFit.cover),
                               // ✅ UPDATED GRADIENT - Prevents cream color from overpowering image
                               Container(
                                 decoration: BoxDecoration(
@@ -148,7 +144,7 @@ class CourseDetailView extends StatelessWidget {
                                     colors: [
                                       Colors.transparent,
                                       Colors.transparent,
-                                      Colors.white.withOpacity(0.3),
+                                      Colors.white.withValues(alpha: 0.3),
                                       theme.backgroundColor,
                                     ],
                                     stops: const [0.0, 0.4, 0.75, 1.0],
@@ -164,8 +160,16 @@ class CourseDetailView extends StatelessWidget {
                                 end: Alignment.bottomRight,
                                 colors: course.gradientColors.isNotEmpty
                                     ? course.gradientColors
-                                        .map((c) => Color(int.parse(c.substring(1, 7), radix: 16) + 0xFF000000))
-                                        .toList()
+                                          .map(
+                                            (c) => Color(
+                                              int.parse(
+                                                    c.substring(1, 7),
+                                                    radix: 16,
+                                                  ) +
+                                                  0xFF000000,
+                                            ),
+                                          )
+                                          .toList()
                                     : [theme.accentColor, theme.cardColor],
                               ),
                             ),
@@ -202,7 +206,10 @@ class CourseDetailView extends StatelessWidget {
                             ),
                             if (course.totalSessions > 0) ...[
                               const SizedBox(width: 8),
-                              Text('•', style: TextStyle(color: theme.textSecondary)),
+                              Text(
+                                '•',
+                                style: TextStyle(color: theme.textSecondary),
+                              ),
                               const SizedBox(width: 8),
                             ],
                             Text(
@@ -214,7 +221,8 @@ class CourseDetailView extends StatelessWidget {
                             ),
                           ],
                         ),
-                        if (course.description != null && course.description!.isNotEmpty) ...[
+                        if (course.description != null &&
+                            course.description!.isNotEmpty) ...[
                           const SizedBox(height: 20),
                           Text(
                             course.description!,
@@ -397,20 +405,15 @@ class CourseDetailView extends StatelessWidget {
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     sliver: SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final session = controller.sessions[index];
-                          return _buildSessionCard(session, controller, theme);
-                        },
-                        childCount: controller.sessions.length,
-                      ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final session = controller.sessions[index];
+                        return _buildSessionCard(session, controller, theme);
+                      }, childCount: controller.sessions.length),
                     ),
                   ),
 
                 // Bottom spacing
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 100),
-                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             );
           }),
@@ -427,13 +430,10 @@ class CourseDetailView extends StatelessWidget {
       return const SizedBox(
         width: 24,
         height: 24,
-        child: CircularProgressIndicator(
-          strokeWidth: 2,
-          color: Colors.white,
-        ),
+        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
       );
     }
-    
+
     if (controller.isCourseDownloaded) {
       return PopupMenuButton<String>(
         icon: const Icon(Icons.download_done, color: Colors.green),
@@ -456,7 +456,7 @@ class CourseDetailView extends StatelessWidget {
         ],
       );
     }
-    
+
     return IconButton(
       icon: const Icon(Icons.download, color: Colors.white),
       onPressed: controller.downloadCourse,
@@ -479,10 +479,7 @@ class CourseDetailView extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: theme.borderColor,
-            width: 1,
-          ),
+          border: Border.all(color: theme.borderColor, width: 1),
         ),
         child: Row(
           children: [
@@ -492,8 +489,8 @@ class CourseDetailView extends StatelessWidget {
               height: 48,
               decoration: BoxDecoration(
                 color: session.isCompleted
-                    ? theme.accentColor.withOpacity(0.2)
-                    : theme.textSecondary.withOpacity(0.1),
+                    ? theme.accentColor.withValues(alpha: 0.2)
+                    : theme.textSecondary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
@@ -555,23 +552,27 @@ class CourseDetailView extends StatelessWidget {
             ),
 
             // HEART ICON
-            Obx(() => IconButton(
-              icon: Icon(
-                controller.isSessionFavorite(session.id) ? Icons.favorite : Icons.favorite_border,
-                color: controller.isSessionFavorite(session.id) ? Colors.red : theme.textSecondary,
-                size: 24,
+            Obx(
+              () => IconButton(
+                icon: Icon(
+                  controller.isSessionFavorite(session.id)
+                      ? Icons.favorite
+                      : Icons.favorite_border,
+                  color: controller.isSessionFavorite(session.id)
+                      ? Colors.red
+                      : theme.textSecondary,
+                  size: 24,
+                ),
+                onPressed: () => controller.toggleSessionFavorite(session),
               ),
-              onPressed: () => controller.toggleSessionFavorite(session),
-            )),
+            ),
 
             const SizedBox(width: 8),
 
             // Lock icon or play icon
             Icon(
               session.isLocked ? Icons.lock : Icons.play_circle_outline,
-              color: session.isLocked
-                  ? theme.textSecondary
-                  : theme.accentColor,
+              color: session.isLocked ? theme.textSecondary : theme.accentColor,
               size: 28,
             ),
           ],

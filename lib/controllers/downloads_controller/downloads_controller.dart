@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import '../../core/services/downloads_service.dart';
 import '../../core/routes/app_routes.dart';
 
 class DownloadsController extends GetxController {
+  final Logger _logger = Logger();
   final DownloadsService _downloadsService = Get.find<DownloadsService>();
-  
-  final RxList<MapEntry<String, dynamic>> downloadedItems = <MapEntry<String, dynamic>>[].obs;
+
+  final RxList<MapEntry<String, dynamic>> downloadedItems =
+      <MapEntry<String, dynamic>>[].obs;
   final RxBool isLoading = false.obs;
   final RxString totalStorage = '0 MB'.obs;
 
@@ -17,18 +20,20 @@ class DownloadsController extends GetxController {
 
   Future<void> loadDownloads() async {
     isLoading.value = true;
-    
+
     try {
       final downloads = await _downloadsService.getDownloadedItems();
       downloadedItems.value = downloads.entries.toList();
-      
+
       // Calculate total storage
       final totalBytes = await _downloadsService.getTotalStorageUsed();
       totalStorage.value = _downloadsService.formatBytes(totalBytes);
-      
-      print('📊 Loaded ${downloadedItems.length} downloads, total: ${totalStorage.value}');
+
+      _logger.i(
+        '📊 Loaded ${downloadedItems.length} downloads, total: ${totalStorage.value}',
+      );
     } catch (e) {
-      print('Error loading downloads: $e');
+      _logger.e('Error loading downloads: $e');
     } finally {
       isLoading.value = false;
     }
@@ -53,10 +58,10 @@ class DownloadsController extends GetxController {
   // ✅ Play downloaded item
   void playDownloadedItem(String id, Map<String, dynamic> metadata) {
     final type = metadata['type'] as String?;
-    
-    print('🎵 Playing downloaded item: $id, type: $type');
-    print('📋 Metadata: $metadata');
-    
+
+    _logger.i('🎵 Playing downloaded item: $id, type: $type');
+    _logger.d('📋 Metadata: $metadata');
+
     switch (type) {
       case 'course_session':
         _playCourseSession(metadata);
@@ -68,7 +73,11 @@ class DownloadsController extends GetxController {
         _playPodcastEpisode(metadata);
         break;
       default:
-        Get.snackbar('Error', 'Unknown content type', snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Error',
+          'Unknown content type',
+          snackPosition: SnackPosition.BOTTOM,
+        );
     }
   }
 
@@ -77,14 +86,14 @@ class DownloadsController extends GetxController {
     Get.toNamed(
       AppRoutes.unifiedPlayer,
       arguments: {
-        'videoUrl': metadata['videoUrl'] ?? '',      // ✅ ADDED
-        'audioUrl': metadata['audioUrl'],             // ✅ ADDED
+        'videoUrl': metadata['videoUrl'] ?? '', // ✅ ADDED
+        'audioUrl': metadata['audioUrl'], // ✅ ADDED
         'sessionId': metadata['sessionId'],
         'title': metadata['sessionTitle'] ?? 'Session',
         'courseId': metadata['courseId'] ?? '',
         'instructor': metadata['instructor'] ?? '',
         'durationMinutes': metadata['duration'] ?? 0,
-        'isDownloaded': true,  // Flag to use local file
+        'isDownloaded': true, // Flag to use local file
       },
     );
   }
@@ -98,7 +107,7 @@ class DownloadsController extends GetxController {
         'title': metadata['title'] ?? '',
         'instructor': metadata['instructor'] ?? '',
         'duration': metadata['duration'] ?? 15,
-        'isDownloaded': true,  // Flag to use local file
+        'isDownloaded': true, // Flag to use local file
       },
     );
   }
@@ -112,7 +121,7 @@ class DownloadsController extends GetxController {
         'title': metadata['title'] ?? '',
         'description': metadata['description'] ?? '',
         'duration': metadata['duration'] ?? 0,
-        'isDownloaded': true,  // Flag to use local file
+        'isDownloaded': true, // Flag to use local file
       },
     );
   }

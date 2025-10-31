@@ -17,10 +17,7 @@ class SplashView extends GetView<SplashController> {
           builder: (context, value, child) {
             return Transform.scale(
               scale: value,
-              child: Opacity(
-                opacity: value,
-                child: child,
-              ),
+              child: Opacity(opacity: value, child: child),
             );
           },
           child: Container(
@@ -38,7 +35,7 @@ class SplashView extends GetView<SplashController> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFFFF7F5C).withOpacity(0.3),
+                  color: const Color(0xFFFF7F5C).withValues(alpha: 0.3),
                   blurRadius: 40,
                   spreadRadius: 10,
                 ),
@@ -68,27 +65,33 @@ class LogoIconPainter extends CustomPainter {
 
     // Create a curved path that looks like the swoosh in the image
     final path = Path();
-    
+
     // Start point (bottom-left of the curve)
     path.moveTo(size.width * 0.3, size.height * 0.7);
-    
+
     // Create a smooth S-curve using cubic bezier
     path.cubicTo(
-      size.width * 0.25, size.height * 0.5,  // Control point 1
-      size.width * 0.35, size.height * 0.35, // Control point 2
-      size.width * 0.5, size.height * 0.3,   // End point 1
+      size.width * 0.25,
+      size.height * 0.5, // Control point 1
+      size.width * 0.35,
+      size.height * 0.35, // Control point 2
+      size.width * 0.5,
+      size.height * 0.3, // End point 1
     );
-    
+
     path.cubicTo(
-      size.width * 0.65, size.height * 0.25, // Control point 3
-      size.width * 0.75, size.height * 0.35, // Control point 4
-      size.width * 0.7, size.height * 0.5,   // End point 2
+      size.width * 0.65,
+      size.height * 0.25, // Control point 3
+      size.width * 0.75,
+      size.height * 0.35, // Control point 4
+      size.width * 0.7,
+      size.height * 0.5, // End point 2
     );
-    
+
     // Make it thicker by stroking
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = 16;
-    
+
     canvas.drawPath(path, paint);
   }
 

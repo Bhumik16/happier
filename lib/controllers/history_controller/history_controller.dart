@@ -1,14 +1,18 @@
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import '../../core/services/history_service.dart';
 import '../../core/services/favorites_service.dart';
 import '../../core/routes/app_routes.dart';
 
 class HistoryController extends GetxController {
+  final Logger _logger = Logger();
   final HistoryService _historyService = Get.find<HistoryService>();
-  
-  final RxList<Map<String, dynamic>> historyItems = <Map<String, dynamic>>[].obs;
-  final RxMap<String, List<Map<String, dynamic>>> groupedHistory = <String, List<Map<String, dynamic>>>{}.obs;
+
+  final RxList<Map<String, dynamic>> historyItems =
+      <Map<String, dynamic>>[].obs;
+  final RxMap<String, List<Map<String, dynamic>>> groupedHistory =
+      <String, List<Map<String, dynamic>>>{}.obs;
   final RxBool isLoading = false.obs;
   final RxMap<String, bool> favoriteStatus = <String, bool>{}.obs;
 
@@ -20,13 +24,13 @@ class HistoryController extends GetxController {
 
   Future<void> loadHistory() async {
     isLoading.value = true;
-    
+
     try {
       historyItems.value = await _historyService.getHistory();
       _groupHistoryByMonth();
       await _loadFavoriteStatus();
     } catch (e) {
-      print('Error loading history: $e');
+      _logger.e('Error loading history: $e');
     } finally {
       isLoading.value = false;
     }
@@ -34,21 +38,21 @@ class HistoryController extends GetxController {
 
   void _groupHistoryByMonth() {
     final Map<String, List<Map<String, dynamic>>> grouped = {};
-    
+
     for (final item in historyItems) {
       try {
         final completedAt = DateTime.parse(item['completedAt'] as String);
         final monthYear = DateFormat('MMMM yyyy').format(completedAt);
-        
+
         if (!grouped.containsKey(monthYear)) {
           grouped[monthYear] = [];
         }
         grouped[monthYear]!.add(item);
       } catch (e) {
-        print('Error parsing date: $e');
+        _logger.e('Error parsing date: $e');
       }
     }
-    
+
     groupedHistory.value = grouped;
   }
 
@@ -73,7 +77,7 @@ class HistoryController extends GetxController {
     groupedHistory.clear();
     Get.snackbar('Cleared', 'History cleared successfully');
   }
-  
+
   Future<void> removeItem(String itemId) async {
     await _historyService.removeFromHistory(itemId);
     await loadHistory();
@@ -82,9 +86,9 @@ class HistoryController extends GetxController {
   void playHistoryItem(Map<String, dynamic> item) {
     final type = item['type'] as String?;
     final itemId = item['id'] as String;
-    
-    print('🎵 Playing history item: $itemId, type: $type');
-    
+
+    _logger.i('🎵 Playing history item: $itemId, type: $type');
+
     switch (type) {
       case 'course':
       case 'session':
@@ -101,7 +105,11 @@ class HistoryController extends GetxController {
         _playSingle(item);
         break;
       default:
-        Get.snackbar('Error', 'Cannot play this item type', snackPosition: SnackPosition.BOTTOM);
+        Get.snackbar(
+          'Error',
+          'Cannot play this item type',
+          snackPosition: SnackPosition.BOTTOM,
+        );
     }
   }
 
@@ -138,6 +146,10 @@ class HistoryController extends GetxController {
   }
 
   void _playSingle(Map<String, dynamic> item) {
-    Get.snackbar('Play Single', 'Playing ${item['title']}...', snackPosition: SnackPosition.BOTTOM);
+    Get.snackbar(
+      'Play Single',
+      'Playing ${item['title']}...',
+      snackPosition: SnackPosition.BOTTOM,
+    );
   }
 }

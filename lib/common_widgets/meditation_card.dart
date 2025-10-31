@@ -36,9 +36,7 @@ class MeditationCard extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                _theme.cardShadow,
-              ],
+              boxShadow: [_theme.cardShadow],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -57,31 +55,31 @@ class MeditationCard extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // BACKGROUND (IMAGE OR GRADIENT)
   // ====================
-  
+
   Widget _buildBackground() {
     if (meditation.hasImage && meditation.imageUrl != null) {
       return Image.asset(
         meditation.imageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: _theme.cardColor,
-          );
+          return Container(color: _theme.cardColor);
         },
       );
     } else {
       final colors = meditation.gradientColors
           .map((hex) => Color(int.parse(hex)))
           .toList();
-      
+
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: colors.isNotEmpty ? colors : [_theme.cardColor, _theme.cardColor],
+            colors: colors.isNotEmpty
+                ? colors
+                : [_theme.cardColor, _theme.cardColor],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -89,24 +87,28 @@ class MeditationCard extends StatelessWidget {
       );
     }
   }
-  
+
   // ====================
   // GRADIENT OVERLAY
   // ====================
-  
+
   Widget _buildGradientOverlay() {
     final colors = meditation.gradientColors
         .map((hex) => Color(int.parse(hex)))
         .toList();
-    
+
     if (isFirstCard) {
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
               Colors.transparent,
-              colors.isNotEmpty ? colors[0].withOpacity(0.75) : Colors.transparent,
-              colors.length > 1 ? colors[1].withOpacity(0.9) : Colors.transparent,
+              colors.isNotEmpty
+                  ? colors[0].withValues(alpha: 0.75)
+                  : Colors.transparent,
+              colors.length > 1
+                  ? colors[1].withValues(alpha: 0.9)
+                  : Colors.transparent,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -118,8 +120,8 @@ class MeditationCard extends StatelessWidget {
       return Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: colors.isNotEmpty 
-                ? colors.map((c) => c.withOpacity(0.6)).toList()
+            colors: colors.isNotEmpty
+                ? colors.map((c) => c.withValues(alpha: 0.6)).toList()
                 : [Colors.transparent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -128,11 +130,11 @@ class MeditationCard extends StatelessWidget {
       );
     }
   }
-  
+
   // ====================
   // CONTENT (TEXT + BUTTONS)
   // ====================
-  
+
   Widget _buildContent() {
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -163,13 +165,13 @@ class MeditationCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          
+
           // ✅ Play button positioned ABOVE teacher name (non-first cards only)
           if (!isFirstCard) ...[
             _buildPlayButtonInline(),
             const SizedBox(height: 12),
           ],
-          
+
           Text(
             meditation.instructor,
             style: const TextStyle(
@@ -197,10 +199,7 @@ class MeditationCard extends StatelessWidget {
                   ),
                   child: const Text(
                     'Start Course',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -219,10 +218,7 @@ class MeditationCard extends StatelessWidget {
                   ),
                   child: const Text(
                     'More',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                   ),
                 ),
               ],
@@ -232,27 +228,23 @@ class MeditationCard extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // PLAY BUTTON WITH DURATION (INLINE - ABOVE TEACHER NAME)
   // ✅ ONLY SHOWN ON NON-FIRST CARDS
   // ====================
-  
+
   Widget _buildPlayButtonInline() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: Colors.black.withOpacity(0.7),
+        color: Colors.black.withValues(alpha: 0.7),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(
-            Icons.play_arrow,
-            color: Colors.white,
-            size: 20,
-          ),
+          const Icon(Icons.play_arrow, color: Colors.white, size: 20),
           const SizedBox(width: 6),
           Text(
             '${meditation.durationMinutes} min',
@@ -266,11 +258,11 @@ class MeditationCard extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // LOCK ICON
   // ====================
-  
+
   Widget _buildLockIcon() {
     return Positioned(
       top: 20,
@@ -278,14 +270,10 @@ class MeditationCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.5),
+          color: Colors.black.withValues(alpha: 0.5),
           shape: BoxShape.circle,
         ),
-        child: const Icon(
-          Icons.lock_outline,
-          color: Colors.white,
-          size: 20,
-        ),
+        child: const Icon(Icons.lock_outline, color: Colors.white, size: 20),
       ),
     );
   }

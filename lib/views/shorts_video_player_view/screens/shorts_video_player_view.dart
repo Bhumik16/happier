@@ -8,7 +8,7 @@ import '../../../core/constants/app_text_styles.dart';
 /// ====================
 /// SHORTS VIDEO PLAYER VIEW
 /// ====================
-/// 
+///
 /// Full-screen video player for Practice In Action and Wisdom Clips
 
 class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
@@ -74,10 +74,7 @@ class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Colors.black.withOpacity(0.7),
-              Colors.transparent,
-            ],
+            colors: [Colors.black.withValues(alpha: 0.7), Colors.transparent],
           ),
         ),
         child: Column(
@@ -122,7 +119,7 @@ class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
       child: Column(
         children: [
           const Spacer(),
-          
+
           // Bottom Controls
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -131,7 +128,7 @@ class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
                 colors: [
-                  Colors.black.withOpacity(0.7),
+                  Colors.black.withValues(alpha: 0.7),
                   Colors.transparent,
                 ],
               ),
@@ -292,9 +289,7 @@ class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
 
   Widget _buildLoadingView() {
     return const Center(
-      child: CircularProgressIndicator(
-        color: AppColors.primary,
-      ),
+      child: CircularProgressIndicator(color: AppColors.primary),
     );
   }
 
@@ -309,11 +304,7 @@ class ShortsVideoPlayerView extends GetView<ShortsVideoPlayerController> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.error_outline,
-              color: Colors.white,
-              size: 60,
-            ),
+            const Icon(Icons.error_outline, color: Colors.white, size: 60),
             const SizedBox(height: 20),
             Text(
               controller.errorMessage,

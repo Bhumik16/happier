@@ -57,7 +57,11 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBar(SearchViewController controller, AppTheme theme, BuildContext context) {
+  Widget _buildTopBar(
+    SearchViewController controller,
+    AppTheme theme,
+    BuildContext context,
+  ) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Row(
@@ -86,10 +90,7 @@ class SearchView extends StatelessWidget {
                       controller: controller.searchController,
                       onChanged: controller.onSearchChanged,
                       autofocus: true, // ✅ Keyboard shows automatically
-                      style: TextStyle(
-                        color: theme.textPrimary,
-                        fontSize: 16,
-                      ),
+                      style: TextStyle(color: theme.textPrimary, fontSize: 16),
                       decoration: InputDecoration(
                         hintText: 'Search',
                         hintStyle: TextStyle(
@@ -97,7 +98,9 @@ class SearchView extends StatelessWidget {
                           fontSize: 16,
                         ),
                         border: InputBorder.none,
-                        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                        contentPadding: const EdgeInsets.symmetric(
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ),
@@ -110,7 +113,10 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildTeachersSection(SearchViewController controller, AppTheme theme) {
+  Widget _buildTeachersSection(
+    SearchViewController controller,
+    AppTheme theme,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -164,18 +170,14 @@ class SearchView extends StatelessWidget {
               height: 80,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: theme.accentColor.withOpacity(0.2),
+                color: theme.accentColor.withValues(alpha: 0.2),
                 border: Border.all(
-                  color: theme.accentColor.withOpacity(0.3),
+                  color: theme.accentColor.withValues(alpha: 0.3),
                   width: 2,
                 ),
               ),
               child: Center(
-                child: Icon(
-                  Icons.person,
-                  size: 40,
-                  color: theme.accentColor,
-                ),
+                child: Icon(Icons.person, size: 40, color: theme.accentColor),
               ),
             ),
             const SizedBox(height: 8),
@@ -197,7 +199,10 @@ class SearchView extends StatelessWidget {
     );
   }
 
-  Widget _buildSuggestedSection(SearchViewController controller, AppTheme theme) {
+  Widget _buildSuggestedSection(
+    SearchViewController controller,
+    AppTheme theme,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -242,10 +247,7 @@ class SearchView extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
           border: Border(
-            bottom: BorderSide(
-              color: theme.dividerColor,
-              width: 1,
-            ),
+            bottom: BorderSide(color: theme.dividerColor, width: 1),
           ),
         ),
         child: Row(
@@ -259,11 +261,7 @@ class SearchView extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            Icon(
-              Icons.chevron_right,
-              color: theme.textSecondary,
-              size: 24,
-            ),
+            Icon(Icons.chevron_right, color: theme.textSecondary, size: 24),
           ],
         ),
       ),

@@ -7,19 +7,16 @@ import '../data/models/short_model.dart';
 /// ====================
 /// PODCAST CARD
 /// ====================
-/// 
+///
 /// Podcast cover card with title and subtitle overlaid on image
 
 class PodcastCard extends StatelessWidget {
   final ShortModel podcast;
   final VoidCallback onTap;
   final AppTheme _theme = AppTheme();
-  
-  PodcastCard({
-    Key? key,
-    required this.podcast,
-    required this.onTap,
-  }) : super(key: key);
+
+  PodcastCard({Key? key, required this.podcast, required this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,23 +44,19 @@ class PodcastCard extends StatelessWidget {
                       podcast.thumbnailImage!,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return Container(
-                          color: _theme.cardColor,
-                        );
+                        return Container(color: _theme.cardColor);
                       },
                     )
                   else
-                    Container(
-                      color: _theme.cardColor,
-                    ),
-                  
+                    Container(color: _theme.cardColor),
+
                   // ✅ Dark Gradient Overlay for text readability (stays same in both themes)
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
                           Colors.transparent,
-                          Colors.black.withOpacity(0.7),
+                          Colors.black.withValues(alpha: 0.7),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -71,7 +64,7 @@ class PodcastCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  
+
                   // Text Content
                   Padding(
                     padding: const EdgeInsets.all(16),
@@ -95,7 +88,7 @@ class PodcastCard extends StatelessWidget {
                             podcast.subtitle!,
                             style: TextStyle(
                               fontSize: 14,
-                              color: Colors.white.withOpacity(0.9),
+                              color: Colors.white.withValues(alpha: 0.9),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

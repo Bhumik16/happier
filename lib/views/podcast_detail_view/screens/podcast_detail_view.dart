@@ -9,7 +9,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// PODCAST DETAIL VIEW
 /// ====================
-/// 
+///
 /// Shows podcast information and episode list
 
 class PodcastDetailView extends StatelessWidget {
@@ -18,14 +18,14 @@ class PodcastDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PodcastDetailController>();
-    
+
     // ✅ Ensure AppearanceController is registered
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
     }
-    
+
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -36,23 +36,23 @@ class PodcastDetailView extends StatelessWidget {
                 child: CircularProgressIndicator(color: theme.accentColor),
               );
             }
-            
+
             return SafeArea(
               child: CustomScrollView(
                 slivers: [
                   // App Bar with back and share buttons
                   _buildSliverAppBar(theme),
-                  
+
                   // Podcast Cover Image
                   SliverToBoxAdapter(
                     child: _buildPodcastCover(controller, theme),
                   ),
-                  
+
                   // Podcast Info Section
                   SliverToBoxAdapter(
                     child: _buildPodcastInfo(controller, theme),
                   ),
-                  
+
                   // Episodes List
                   SliverToBoxAdapter(
                     child: _buildEpisodesList(controller, theme),
@@ -65,11 +65,11 @@ class PodcastDetailView extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // APP BAR
   // ====================
-  
+
   Widget _buildSliverAppBar(AppTheme theme) {
     return SliverAppBar(
       backgroundColor: theme.appBarColor,
@@ -78,34 +78,32 @@ class PodcastDetailView extends StatelessWidget {
       floating: true,
       leading: IconButton(
         onPressed: () => NavigationHelper.goBackSimple(),
-        icon: Icon(
-          Icons.arrow_back,
-          color: theme.iconPrimary,
-          size: 28,
-        ),
+        icon: Icon(Icons.arrow_back, color: theme.iconPrimary, size: 28),
       ),
       actions: [
         IconButton(
           onPressed: () {
-            Get.snackbar('Share', 'Sharing podcast...',
-                snackPosition: SnackPosition.BOTTOM);
+            Get.snackbar(
+              'Share',
+              'Sharing podcast...',
+              snackPosition: SnackPosition.BOTTOM,
+            );
           },
-          icon: Icon(
-            Icons.share,
-            color: theme.iconPrimary,
-            size: 24,
-          ),
+          icon: Icon(Icons.share, color: theme.iconPrimary, size: 24),
         ),
         const SizedBox(width: 8),
       ],
     );
   }
-  
+
   // ====================
   // PODCAST COVER IMAGE
   // ====================
-  
-  Widget _buildPodcastCover(PodcastDetailController controller, AppTheme theme) {
+
+  Widget _buildPodcastCover(
+    PodcastDetailController controller,
+    AppTheme theme,
+  ) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
@@ -144,11 +142,11 @@ class PodcastDetailView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // PODCAST INFO
   // ====================
-  
+
   Widget _buildPodcastInfo(PodcastDetailController controller, AppTheme theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
@@ -165,7 +163,7 @@ class PodcastDetailView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          
+
           // Title
           Text(
             controller.podcast!.title,
@@ -176,26 +174,19 @@ class PodcastDetailView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Subscriber Only Badge
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: Colors.amber.withOpacity(0.2),
+              color: Colors.amber.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Colors.amber,
-                width: 1,
-              ),
+              border: Border.all(color: Colors.amber, width: 1),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Icon(
-                  Icons.check_circle,
-                  color: Colors.amber,
-                  size: 16,
-                ),
+                const Icon(Icons.check_circle, color: Colors.amber, size: 16),
                 const SizedBox(width: 6),
                 Text(
                   'Subscriber Only Show',
@@ -209,7 +200,7 @@ class PodcastDetailView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 16),
-          
+
           // Description
           if (controller.podcast!.description != null)
             Text(
@@ -220,53 +211,51 @@ class PodcastDetailView extends StatelessWidget {
                 height: 1.5,
               ),
             ),
-          
+
           const SizedBox(height: 24),
         ],
       ),
     );
   }
-  
+
   // ====================
   // EPISODES LIST
   // ====================
-  
-  Widget _buildEpisodesList(PodcastDetailController controller, AppTheme theme) {
+
+  Widget _buildEpisodesList(
+    PodcastDetailController controller,
+    AppTheme theme,
+  ) {
     if (controller.episodes.isEmpty) {
       return Padding(
         padding: const EdgeInsets.all(40),
         child: Center(
           child: Text(
             'No episodes available',
-            style: TextStyle(
-              color: theme.textPrimary,
-              fontSize: 16,
-            ),
+            style: TextStyle(color: theme.textPrimary, fontSize: 16),
           ),
         ),
       );
     }
-    
+
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       itemCount: controller.episodes.length,
-      separatorBuilder: (context, index) => Divider(
-        color: theme.dividerColor,
-        height: 1,
-      ),
+      separatorBuilder: (context, index) =>
+          Divider(color: theme.dividerColor, height: 1),
       itemBuilder: (context, index) {
         final episode = controller.episodes[index];
         return _buildEpisodeItem(episode, controller, theme);
       },
     );
   }
-  
+
   // ====================
   // EPISODE ITEM
   // ====================
-  
+
   Widget _buildEpisodeItem(
     PodcastEpisodeModel episode,
     PodcastDetailController controller,
@@ -291,16 +280,13 @@ class PodcastDetailView extends StatelessWidget {
                     width: 80,
                     height: 80,
                     color: theme.cardColor,
-                    child: Icon(
-                      Icons.podcasts,
-                      color: theme.textSecondary,
-                    ),
+                    child: Icon(Icons.podcasts, color: theme.textSecondary),
                   );
                 },
               ),
             ),
             const SizedBox(width: 16),
-            
+
             // Episode Info
             Expanded(
               child: Column(
@@ -316,7 +302,7 @@ class PodcastDetailView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  
+
                   // Title
                   Text(
                     episode.title,
@@ -329,14 +315,11 @@ class PodcastDetailView extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  
+
                   // Duration
                   Text(
                     episode.duration,
-                    style: TextStyle(
-                      color: theme.textSecondary,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: theme.textSecondary, fontSize: 14),
                   ),
                 ],
               ),

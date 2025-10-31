@@ -12,7 +12,7 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         final theme = appearanceController.theme;
-        
+
         return Scaffold(
           backgroundColor: theme.backgroundColor,
           appBar: AppBar(
@@ -35,32 +35,38 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
             padding: const EdgeInsets.all(20),
             children: [
               // Download Only on Wi-Fi
-              Obx(() => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Download Only on Wi-Fi',
-                    style: TextStyle(
-                      color: theme.textPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+              Obx(
+                () => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Download Only on Wi-Fi',
+                      style: TextStyle(
+                        color: theme.textPrimary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
-                  ),
-                  Switch(
-                    value: controller.downloadOnlyOnWifi.value,
-                    onChanged: controller.toggleDownloadOnlyOnWifi,
-                    activeColor: theme.accentColor,
-                    activeTrackColor: theme.accentColor.withOpacity(0.5),
-                    inactiveThumbColor: theme.isDark ? Colors.grey : const Color(0xFFB8B8B8),
-                    inactiveTrackColor: theme.isDark 
-                        ? Colors.grey.withOpacity(0.3) 
-                        : const Color(0xFFD8D8D8),
-                  ),
-                ],
-              )),
-              
+                    Switch(
+                      value: controller.downloadOnlyOnWifi.value,
+                      onChanged: controller.toggleDownloadOnlyOnWifi,
+                      activeColor: theme.accentColor,
+                      activeTrackColor: theme.accentColor.withValues(
+                        alpha: 0.5,
+                      ),
+                      inactiveThumbColor: theme.isDark
+                          ? Colors.grey
+                          : const Color(0xFFB8B8B8),
+                      inactiveTrackColor: theme.isDark
+                          ? Colors.grey.withValues(alpha: 0.3)
+                          : const Color(0xFFD8D8D8),
+                    ),
+                  ],
+                ),
+              ),
+
               const SizedBox(height: 32),
-              
+
               // Quality
               InkWell(
                 onTap: controller.openQualityPicker,
@@ -76,19 +82,21 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
                       ),
                     ),
                     const SizedBox(height: 4),
-                    Obx(() => Text(
-                      controller.quality.value,
-                      style: TextStyle(
-                        color: theme.textSecondary,
-                        fontSize: 16,
+                    Obx(
+                      () => Text(
+                        controller.quality.value,
+                        style: TextStyle(
+                          color: theme.textSecondary,
+                          fontSize: 16,
+                        ),
                       ),
-                    )),
+                    ),
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Happier Meditation Downloads
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,18 +110,20 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Obx(() => Text(
-                    controller.totalDownloadsSize.value,
-                    style: TextStyle(
-                      color: theme.textSecondary,
-                      fontSize: 16,
+                  Obx(
+                    () => Text(
+                      controller.totalDownloadsSize.value,
+                      style: TextStyle(
+                        color: theme.textSecondary,
+                        fontSize: 16,
+                      ),
                     ),
-                  )),
+                  ),
                 ],
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Free Space
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,18 +137,20 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Obx(() => Text(
-                    controller.freeSpace.value,
-                    style: TextStyle(
-                      color: theme.textSecondary,
-                      fontSize: 16,
+                  Obx(
+                    () => Text(
+                      controller.freeSpace.value,
+                      style: TextStyle(
+                        color: theme.textSecondary,
+                        fontSize: 16,
+                      ),
                     ),
-                  )),
+                  ),
                 ],
               ),
-              
+
               const SizedBox(height: 50),
-              
+
               // Remove All Downloads Button
               SizedBox(
                 width: double.infinity,
@@ -146,8 +158,8 @@ class DownloadsSettingsView extends GetView<DownloadsSettingsController> {
                 child: ElevatedButton(
                   onPressed: controller.removeAllDownloads,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.isDark 
-                        ? const Color(0xFF808080) 
+                    backgroundColor: theme.isDark
+                        ? const Color(0xFF808080)
                         : const Color(0xFFB8B8B8),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),

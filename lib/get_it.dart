@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 
 // Import repositories (only implemented ones)
 import 'repository/meditation_repository/meditation_repository.dart';
@@ -6,6 +7,8 @@ import 'repository/course_repository/course_repository.dart';
 import 'repository/shorts_repository/shorts_repository.dart';
 import 'repository/singles_repository/singles_repository.dart';
 import 'repository/sleeps_repository/sleeps_repository.dart';
+
+final Logger _logger = Logger();
 
 /// ====================
 /// DEPENDENCY INJECTION SETUP
@@ -17,7 +20,7 @@ import 'repository/sleeps_repository/sleeps_repository.dart';
 Future<void> setupDependencyInjection() async {
   final getIt = GetIt.instance;
 
-  print('🔧 Setting up dependency injection...\n');
+  _logger.d('🔧 Setting up dependency injection...\n');
 
   // ====================
   // REGISTER REPOSITORIES (Only implemented ones)
@@ -31,6 +34,6 @@ Future<void> setupDependencyInjection() async {
   getIt.registerLazySingleton<SinglesRepository>(() => SinglesRepository());
   getIt.registerLazySingleton<SleepsRepository>(() => SleepsRepository());
 
-  print('✅ Repositories registered');
-  print('✅ Dependency injection setup complete!\n');
+  _logger.i('✅ Repositories registered');
+  _logger.i('✅ Dependency injection setup complete!\n');
 }

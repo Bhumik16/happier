@@ -7,7 +7,7 @@ import '../../../controllers/audio_player_controller/audio_player_controller.dar
 /// ====================
 /// AUDIO PLAYER VIEW
 /// ====================
-/// 
+///
 /// Full-screen audio player with timer and gradient background
 
 class AudioPlayerView extends StatelessWidget {
@@ -16,15 +16,12 @@ class AudioPlayerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<AudioPlayerController>();
-    
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              const Color(0xFF4DB8C4),
-              const Color(0xFFE8A85C),
-            ],
+            colors: [const Color(0xFF4DB8C4), const Color(0xFFE8A85C)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -34,18 +31,16 @@ class AudioPlayerView extends StatelessWidget {
             children: [
               // Header
               _buildHeader(controller),
-              
+
               // Main Content
-              Expanded(
-                child: _buildMainContent(controller),
-              ),
-              
+              Expanded(child: _buildMainContent(controller)),
+
               // Controls
               _buildControls(controller),
-              
+
               // Progress Bar
               _buildProgressBar(controller),
-              
+
               const SizedBox(height: 20),
             ],
           ),
@@ -53,11 +48,11 @@ class AudioPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // HEADER
   // ====================
-  
+
   Widget _buildHeader(AudioPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -67,7 +62,7 @@ class AudioPlayerView extends StatelessWidget {
           // Learn/Meditate Toggle (Meditate selected)
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(30),
             ),
             padding: const EdgeInsets.all(4),
@@ -78,7 +73,7 @@ class AudioPlayerView extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Favorite Button
           IconButton(
             onPressed: () {
@@ -94,7 +89,7 @@ class AudioPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildTabButton(String text, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -115,11 +110,11 @@ class AudioPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // MAIN CONTENT (Timer)
   // ====================
-  
+
   Widget _buildMainContent(AudioPlayerController controller) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -135,39 +130,41 @@ class AudioPlayerView extends StatelessWidget {
           ),
           textAlign: TextAlign.center,
         ),
-        
+
         const SizedBox(height: 8),
-        
+
         // Session Number
         Text(
           'Session ${controller.session?.sessionNumber ?? 1}',
           style: TextStyle(
-            color: Colors.white.withOpacity(0.9),
+            color: Colors.white.withValues(alpha: 0.9),
             fontSize: 18,
             fontWeight: FontWeight.w400,
           ),
         ),
-        
+
         const SizedBox(height: 60),
-        
+
         // Large Timer
-        Obx(() => Text(
-          controller.remainingText,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 80,
-            fontWeight: FontWeight.w300,
-            letterSpacing: 2,
+        Obx(
+          () => Text(
+            controller.remainingText,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 80,
+              fontWeight: FontWeight.w300,
+              letterSpacing: 2,
+            ),
           ),
-        )),
+        ),
       ],
     );
   }
-  
+
   // ====================
   // CONTROLS
   // ====================
-  
+
   Widget _buildControls(AudioPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -179,35 +176,37 @@ class AudioPlayerView extends StatelessWidget {
             onPressed: () => controller.seekBackward(10),
             icon: Icon(
               Icons.replay_10,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               size: 36,
             ),
           ),
-          
+
           // Play/Pause
-          Obx(() => GestureDetector(
-            onTap: controller.togglePlayPause,
-            child: Container(
-              width: 70,
-              height: 70,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                controller.isPlaying ? Icons.pause : Icons.play_arrow,
-                color: const Color(0xFF4DB8C4),
-                size: 40,
+          Obx(
+            () => GestureDetector(
+              onTap: controller.togglePlayPause,
+              child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  controller.isPlaying ? Icons.pause : Icons.play_arrow,
+                  color: const Color(0xFF4DB8C4),
+                  size: 40,
+                ),
               ),
             ),
-          )),
-          
+          ),
+
           // Forward 10s
           IconButton(
             onPressed: () => controller.seekForward(10),
             icon: Icon(
               Icons.forward_10,
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               size: 36,
             ),
           ),
@@ -215,55 +214,61 @@ class AudioPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // PROGRESS BAR
   // ====================
-  
+
   Widget _buildProgressBar(AudioPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
       child: Column(
         children: [
-          Obx(() => SliderTheme(
-            data: SliderThemeData(
-              trackHeight: 3,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
-              overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
-              activeTrackColor: Colors.white,
-              inactiveTrackColor: Colors.white.withOpacity(0.3),
-              thumbColor: Colors.white,
-              overlayColor: Colors.white.withOpacity(0.2),
+          Obx(
+            () => SliderTheme(
+              data: SliderThemeData(
+                trackHeight: 3,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                activeTrackColor: Colors.white,
+                inactiveTrackColor: Colors.white.withValues(alpha: 0.3),
+                thumbColor: Colors.white,
+                overlayColor: Colors.white.withValues(alpha: 0.2),
+              ),
+              child: Slider(
+                value: controller.progress,
+                onChanged: (value) {
+                  final position = controller.duration * value;
+                  controller.seek(position);
+                },
+              ),
             ),
-            child: Slider(
-              value: controller.progress,
-              onChanged: (value) {
-                final position = controller.duration * value;
-                controller.seek(position);
-              },
-            ),
-          )),
-          
+          ),
+
           // Time Labels
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => Text(
-                  controller.positionText,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 12,
+                Obx(
+                  () => Text(
+                    controller.positionText,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 12,
+                    ),
                   ),
-                )),
-                Obx(() => Text(
-                  controller.durationText,
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
-                    fontSize: 12,
+                ),
+                Obx(
+                  () => Text(
+                    controller.durationText,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.9),
+                      fontSize: 12,
+                    ),
                   ),
-                )),
+                ),
               ],
             ),
           ),

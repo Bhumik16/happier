@@ -17,7 +17,7 @@ class FavoritesListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<FavoritesListController>();
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -29,18 +29,22 @@ class FavoritesListView extends StatelessWidget {
               icon: Icon(Icons.arrow_back, color: theme.iconPrimary),
               onPressed: () => NavigationHelper.goBackSimple(),
             ),
-            title: Obx(() => Text(
-              controller.isShowingFavorites ? 'Your Favorites' : 'Recently Played',
-              style: TextStyle(
-                color: theme.textPrimary,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+            title: Obx(
+              () => Text(
+                controller.isShowingFavorites
+                    ? 'Your Favorites'
+                    : 'Recently Played',
+                style: TextStyle(
+                  color: theme.textPrimary,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            )),
+            ),
             actions: [
               Obx(() {
                 if (controller.items.isEmpty) return const SizedBox.shrink();
-                
+
                 return IconButton(
                   icon: Icon(Icons.delete_outline, color: theme.iconPrimary),
                   onPressed: () => _showClearDialog(context, controller, theme),
@@ -54,11 +58,11 @@ class FavoritesListView extends StatelessWidget {
                 child: CircularProgressIndicator(color: theme.accentColor),
               );
             }
-            
+
             if (controller.items.isEmpty) {
               return _buildEmptyState(controller, theme);
             }
-            
+
             return RefreshIndicator(
               onRefresh: controller.refresh,
               color: theme.accentColor,
@@ -77,11 +81,11 @@ class FavoritesListView extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // SESSION CARD
   // ====================
-  
+
   Widget _buildSessionCard(
     Map<String, dynamic> item,
     FavoritesListController controller,
@@ -92,7 +96,7 @@ class FavoritesListView extends StatelessWidget {
     final instructor = item['instructor'] ?? 'Unknown';
     final duration = item['durationMinutes'] ?? 0;
     final sessionId = item['sessionId'] ?? '';
-    
+
     return Dismissible(
       key: Key('${sessionId}_$index'),
       background: Container(
@@ -117,10 +121,7 @@ class FavoritesListView extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.cardColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: theme.borderColor,
-              width: 1,
-            ),
+            border: Border.all(color: theme.borderColor, width: 1),
           ),
           child: Row(
             children: [
@@ -129,7 +130,7 @@ class FavoritesListView extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: theme.accentColor.withOpacity(0.2),
+                  color: theme.accentColor.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -139,7 +140,7 @@ class FavoritesListView extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 16),
-              
+
               // Session info
               Expanded(
                 child: Column(
@@ -167,7 +168,10 @@ class FavoritesListView extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Text('•', style: TextStyle(color: theme.textSecondary)),
+                          Text(
+                            '•',
+                            style: TextStyle(color: theme.textSecondary),
+                          ),
                           const SizedBox(width: 8),
                         ],
                         Text(
@@ -182,25 +186,21 @@ class FavoritesListView extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               // Favorite icon (only for favorites view)
               if (controller.isShowingFavorites)
-                const Icon(
-                  Icons.favorite,
-                  color: Colors.red,
-                  size: 24,
-                ),
+                const Icon(Icons.favorite, color: Colors.red, size: 24),
             ],
           ),
         ),
       ),
     );
   }
-  
+
   // ====================
   // EMPTY STATE
   // ====================
-  
+
   Widget _buildEmptyState(FavoritesListController controller, AppTheme theme) {
     return Center(
       child: Padding(
@@ -209,14 +209,16 @@ class FavoritesListView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              controller.isShowingFavorites ? Icons.favorite_border : Icons.history,
+              controller.isShowingFavorites
+                  ? Icons.favorite_border
+                  : Icons.history,
               size: 80,
               color: theme.textSecondary,
             ),
             const SizedBox(height: 20),
             Text(
-              controller.isShowingFavorites 
-                  ? 'No Favorites Yet' 
+              controller.isShowingFavorites
+                  ? 'No Favorites Yet'
                   : 'No History Yet',
               style: TextStyle(
                 color: theme.textPrimary,
@@ -229,10 +231,7 @@ class FavoritesListView extends StatelessWidget {
               controller.isShowingFavorites
                   ? 'Tap the heart icon in the player to save your favorite sessions'
                   : 'Your recently played sessions will appear here',
-              style: TextStyle(
-                color: theme.textSecondary,
-                fontSize: 16,
-              ),
+              style: TextStyle(color: theme.textSecondary, fontSize: 16),
               textAlign: TextAlign.center,
             ),
           ],
@@ -240,11 +239,11 @@ class FavoritesListView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // CLEAR DIALOG
   // ====================
-  
+
   void _showClearDialog(
     BuildContext context,
     FavoritesListController controller,
@@ -265,28 +264,19 @@ class FavoritesListView extends StatelessWidget {
           controller.isShowingFavorites
               ? 'This will remove all your favorite sessions.'
               : 'This will clear your recently played history.',
-          style: TextStyle(
-            color: theme.textSecondary,
-            fontSize: 16,
-          ),
+          style: TextStyle(color: theme.textSecondary, fontSize: 16),
         ),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: theme.textSecondary),
-            ),
+            child: Text('Cancel', style: TextStyle(color: theme.textSecondary)),
           ),
           TextButton(
             onPressed: () {
               Get.back();
               controller.clearAll();
             },
-            child: const Text(
-              'Clear',
-              style: TextStyle(color: Colors.red),
-            ),
+            child: const Text('Clear', style: TextStyle(color: Colors.red)),
           ),
         ],
       ),

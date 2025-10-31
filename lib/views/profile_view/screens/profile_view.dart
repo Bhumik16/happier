@@ -45,32 +45,32 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   // Top Bar
                   _buildTopBar(),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Gradient Stats Card
                   _buildGradientStatsCard(),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Favorites Button
                   _buildFavoritesButton(),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Unlock Button
                   _buildUnlockButton(),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Calendar Widget with PageView
                   _buildCalendarWidget(),
-                  
+
                   const SizedBox(height: 20),
-                  
+
                   // Menu Items
                   _buildMenuItems(),
-                  
+
                   const SizedBox(height: 40),
                 ],
               ),
@@ -154,7 +154,7 @@ class _ProfileViewState extends State<ProfileView> {
                 ],
               ),
             ),
-            
+
             // Bottom stats section
             Container(
               padding: const EdgeInsets.all(20),
@@ -223,7 +223,7 @@ class _ProfileViewState extends State<ProfileView> {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: _theme.accentColor.withOpacity(0.1),
+                  color: _theme.accentColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Icon(
@@ -295,15 +295,15 @@ class _ProfileViewState extends State<ProfileView> {
                 children: [
                   // Page 1: Last 4 Weeks
                   _buildLast4WeeksCalendar(),
-                  
+
                   // Page 2: Last 30 Days
                   _buildLast30DaysCalendar(),
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 16),
-            
+
             // Page indicator dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -325,7 +325,9 @@ class _ProfileViewState extends State<ProfileView> {
       height: 8,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isActive ? _theme.textPrimary : _theme.textSecondary.withOpacity(0.3),
+        color: isActive
+            ? _theme.textPrimary
+            : _theme.textSecondary.withValues(alpha: 0.3),
       ),
     );
   }
@@ -342,7 +344,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
         const SizedBox(height: 20),
-        
+
         // Calendar grid with day headers
         _buildWeeklyCalendarGrid(),
       ],
@@ -361,11 +363,9 @@ class _ProfileViewState extends State<ProfileView> {
           ),
         ),
         const SizedBox(height: 20),
-        
+
         // Equally spaced 3 dotted lines filling the space
-        Expanded(
-          child: _build30DaysHorizontalDots(),
-        ),
+        Expanded(child: _build30DaysHorizontalDots()),
       ],
     );
   }
@@ -387,7 +387,7 @@ class _ProfileViewState extends State<ProfileView> {
           ],
         ),
         const SizedBox(height: 16),
-        
+
         // 4 weeks of dots
         for (int week = 0; week < 4; week++)
           Padding(
@@ -426,7 +426,7 @@ class _ProfileViewState extends State<ProfileView> {
           height: 5,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: _theme.textSecondary.withOpacity(0.3),
+            color: _theme.textSecondary.withValues(alpha: 0.3),
           ),
         ),
       ),
@@ -454,10 +454,10 @@ class _ProfileViewState extends State<ProfileView> {
       height: 36,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: isHighlighted 
-            ? Colors.transparent 
-            : _theme.textSecondary.withOpacity(0.3),
-        border: isHighlighted 
+        color: isHighlighted
+            ? Colors.transparent
+            : _theme.textSecondary.withValues(alpha: 0.3),
+        border: isHighlighted
             ? Border.all(color: _theme.accentColor, width: 3)
             : null,
       ),
@@ -528,11 +528,7 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
             ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: _theme.accentColor,
-              size: 18,
-            ),
+            Icon(Icons.arrow_forward_ios, color: _theme.accentColor, size: 18),
           ],
         ),
       ),
@@ -542,10 +538,7 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _buildDivider() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Divider(
-        color: _theme.dividerColor,
-        height: 1,
-      ),
+      child: Divider(color: _theme.dividerColor, height: 1),
     );
   }
 }
@@ -559,19 +552,17 @@ class CircularTextPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final textPainter = TextPainter(
-      textDirection: TextDirection.ltr,
-    );
+    final textPainter = TextPainter(textDirection: TextDirection.ltr);
 
     final centerX = size.width / 2;
     final centerY = size.height / 2;
-    
+
     final displayText = "Mindful Days Mindful Days";
     final angleStep = (2 * math.pi) / displayText.length;
 
     for (int i = 0; i < displayText.length; i++) {
       final angle = i * angleStep - math.pi / 2;
-      
+
       textPainter.text = TextSpan(
         text: displayText[i],
         style: const TextStyle(
@@ -581,9 +572,9 @@ class CircularTextPainter extends CustomPainter {
           letterSpacing: 0,
         ),
       );
-      
+
       textPainter.layout();
-      
+
       canvas.save();
       canvas.translate(centerX, centerY);
       canvas.rotate(angle + math.pi / 2);

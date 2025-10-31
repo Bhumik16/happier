@@ -7,7 +7,7 @@ import '../data/models/single_model.dart';
 /// ====================
 /// SINGLE CARD
 /// ====================
-/// 
+///
 /// Reusable gradient card for singles
 
 class SingleCard extends StatelessWidget {
@@ -16,7 +16,7 @@ class SingleCard extends StatelessWidget {
   final double height;
   final double? width;
   final AppTheme _theme = AppTheme();
-  
+
   SingleCard({
     Key? key,
     required this.single,
@@ -38,9 +38,7 @@ class SingleCard extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               gradient: _buildGradient(),
-              boxShadow: [
-                _theme.cardShadow,
-              ],
+              boxShadow: [_theme.cardShadow],
             ),
             child: Center(
               child: Padding(
@@ -63,25 +61,25 @@ class SingleCard extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // BUILD GRADIENT
   // ====================
-  
+
   LinearGradient _buildGradient() {
     final colors = single.gradientColors
         .map((hex) => Color(int.parse(hex)))
         .toList();
-    
+
     if (colors.isEmpty) {
       // Fallback gradient using theme colors
       return LinearGradient(
-        colors: [_theme.cardColor, _theme.cardColor.withOpacity(0.8)],
+        colors: [_theme.cardColor, _theme.cardColor.withValues(alpha: 0.8)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
       );
     }
-    
+
     // Use the defined gradient colors (same in both themes)
     return LinearGradient(
       colors: colors,

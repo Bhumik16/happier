@@ -152,20 +152,20 @@ class UserOnboardingView extends GetView<UserOnboardingController> {
     );
   }
   
-  Widget _buildTextButton({required String text, required VoidCallback onTap}) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: const TextStyle(color: Colors.grey, fontSize: 16),
-        ),
-      ),
-    );
-  }
+  // Widget _buildTextButton({required String text, required VoidCallback onTap}) {
+  //   return GestureDetector(
+  //     onTap: onTap,
+  //     child: Container(
+  //       width: double.infinity,
+  //       padding: const EdgeInsets.symmetric(vertical: 16),
+  //       child: Text(
+  //         text,
+  //         textAlign: TextAlign.center,
+  //         style: const TextStyle(color: Colors.grey, fontSize: 16),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 // ========================================

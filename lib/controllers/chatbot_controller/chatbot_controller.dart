@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:logger/logger.dart';
 import 'dart:convert';
 import '../auth_controller/auth_controller.dart';
 
@@ -19,20 +20,21 @@ class ChatMessage {
 
   // Convert to JSON for storage
   Map<String, dynamic> toJson() => {
-        'text': text,
-        'isUser': isUser,
-        'timestamp': timestamp.toIso8601String(),
-      };
+    'text': text,
+    'isUser': isUser,
+    'timestamp': timestamp.toIso8601String(),
+  };
 
   // Create from JSON
   factory ChatMessage.fromJson(Map<String, dynamic> json) => ChatMessage(
-        text: json['text'],
-        isUser: json['isUser'],
-        timestamp: DateTime.parse(json['timestamp']),
-      );
+    text: json['text'],
+    isUser: json['isUser'],
+    timestamp: DateTime.parse(json['timestamp']),
+  );
 }
 
 class ChatbotController extends GetxController {
+  final Logger _logger = Logger();
   final RxList<ChatMessage> messages = <ChatMessage>[].obs;
   final RxBool isTyping = false.obs;
   final RxBool isInitialized = false.obs;
@@ -52,16 +54,16 @@ class ChatbotController extends GetxController {
   Future<void> _loadChatHistory() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // ✅ Get current user ID from AuthController
       String userId = 'guest';
       try {
         final authController = Get.find<AuthController>();
         userId = authController.user?.uid ?? 'guest';
       } catch (e) {
-        print('⚠️ AuthController not found, using guest mode');
+        _logger.w('⚠️ AuthController not found, using guest mode');
       }
-      
+
       // ✅ Use user-specific key: chat_history_USER_ID
       final String chatKey = 'chat_history_$userId';
       final String? chatHistoryJson = prefs.getString(chatKey);
@@ -71,13 +73,13 @@ class ChatbotController extends GetxController {
         messages.value = decoded
             .map((item) => ChatMessage.fromJson(item as Map<String, dynamic>))
             .toList();
-        print('✅ Loaded ${messages.length} messages for user: $userId');
+        _logger.i('✅ Loaded ${messages.length} messages for user: $userId');
       } else {
-        print('ℹ️ No chat history found for user: $userId');
+        _logger.i('ℹ️ No chat history found for user: $userId');
         _sendWelcomeMessage();
       }
     } catch (e) {
-      print('⚠️ Error loading chat history: $e');
+      _logger.w('⚠️ Error loading chat history: $e');
       _sendWelcomeMessage();
     }
   }
@@ -86,7 +88,7 @@ class ChatbotController extends GetxController {
   Future<void> _saveChatHistory() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      
+
       // ✅ Get current user ID from AuthController
       String userId = 'guest';
       try {
@@ -95,15 +97,16 @@ class ChatbotController extends GetxController {
       } catch (e) {
         print('⚠️ AuthController not found, using guest mode');
       }
-      
+
       // ✅ Use user-specific key: chat_history_USER_ID
       final String chatKey = 'chat_history_$userId';
-      final String chatHistoryJson =
-          json.encode(messages.map((msg) => msg.toJson()).toList());
+      final String chatHistoryJson = json.encode(
+        messages.map((msg) => msg.toJson()).toList(),
+      );
       await prefs.setString(chatKey, chatHistoryJson);
-      print('✅ Chat saved for user: $userId (${messages.length} messages)');
+      _logger.i('✅ Chat saved for user: $userId (${messages.length} messages)');
     } catch (e) {
-      print('❌ Error saving chat history: $e');
+      _logger.e('❌ Error saving chat history: $e');
     }
   }
 
@@ -114,7 +117,7 @@ class ChatbotController extends GetxController {
       final apiKey = dotenv.env['GEMINI_API_KEY'];
 
       if (apiKey == null || apiKey.isEmpty) {
-        print('❌ ERROR: GEMINI_API_KEY not found in .env file!');
+        _logger.e('❌ ERROR: GEMINI_API_KEY not found in .env file!');
         Get.snackbar(
           'Configuration Error',
           'Chatbot API key is missing. Please add GEMINI_API_KEY to your .env file.',
@@ -126,7 +129,7 @@ class ChatbotController extends GetxController {
         return;
       }
 
-      print('✅ Gemini API key loaded successfully');
+      _logger.i('✅ Gemini API key loaded successfully');
 
       // ✅ Try multiple model options in order of preference
       final modelOptions = [
@@ -138,12 +141,12 @@ class ChatbotController extends GetxController {
       ];
 
       String? workingModel;
-      
+
       // Try to initialize with the first available model
       for (final modelName in modelOptions) {
         try {
-          print('🔄 Trying model: $modelName');
-          
+          _logger.d('🔄 Trying model: $modelName');
+
           _model = GenerativeModel(
             model: modelName,
             apiKey: apiKey,
@@ -156,16 +159,22 @@ class ChatbotController extends GetxController {
             safetySettings: [
               SafetySetting(HarmCategory.harassment, HarmBlockThreshold.medium),
               SafetySetting(HarmCategory.hateSpeech, HarmBlockThreshold.medium),
-              SafetySetting(HarmCategory.dangerousContent, HarmBlockThreshold.medium),
-              SafetySetting(HarmCategory.sexuallyExplicit, HarmBlockThreshold.medium),
+              SafetySetting(
+                HarmCategory.dangerousContent,
+                HarmBlockThreshold.medium,
+              ),
+              SafetySetting(
+                HarmCategory.sexuallyExplicit,
+                HarmBlockThreshold.medium,
+              ),
             ],
           );
-          
+
           workingModel = modelName;
-          print('✅ Successfully initialized with model: $modelName');
+          _logger.i('✅ Successfully initialized with model: $modelName');
           break;
         } catch (e) {
-          print('⚠️ Model $modelName failed: $e');
+          _logger.w('⚠️ Model $modelName failed: $e');
           continue;
         }
       }
@@ -175,25 +184,27 @@ class ChatbotController extends GetxController {
       }
 
       // Start chat with context
-      _chat = _model.startChat(history: [
-        Content.text(
-          'You are a helpful meditation and wellness coach for the Happier Meditation app. '
-          'Your role is to answer questions about:\n'
-          '- Meditation techniques and practices\n'
-          '- Mindfulness exercises\n'
-          '- Diet and nutrition for mental wellness\n'
-          '- Stress management and relaxation\n'
-          '- Sleep improvement tips\n'
-          '- Building meditation habits\n'
-          '- Breathing exercises and mindfulness\n\n'
-          'Keep responses concise (2-3 paragraphs max), friendly, and encouraging. '
-          'Always promote a calm and positive mindset. Use emojis occasionally to keep it warm and friendly.',
-        ),
-      ]);
+      _chat = _model.startChat(
+        history: [
+          Content.text(
+            'You are a helpful meditation and wellness coach for the Happier Meditation app. '
+            'Your role is to answer questions about:\n'
+            '- Meditation techniques and practices\n'
+            '- Mindfulness exercises\n'
+            '- Diet and nutrition for mental wellness\n'
+            '- Stress management and relaxation\n'
+            '- Sleep improvement tips\n'
+            '- Building meditation habits\n'
+            '- Breathing exercises and mindfulness\n\n'
+            'Keep responses concise (2-3 paragraphs max), friendly, and encouraging. '
+            'Always promote a calm and positive mindset. Use emojis occasionally to keep it warm and friendly.',
+          ),
+        ],
+      );
 
       isInitialized.value = true;
       print('✅ Gemini chatbot initialized successfully with $workingModel');
-      
+
       Get.snackbar(
         'Chatbot Ready! 🤖',
         'Using model: $workingModel',
@@ -202,9 +213,8 @@ class ChatbotController extends GetxController {
         colorText: Colors.black,
         duration: const Duration(seconds: 2),
       );
-      
     } catch (e) {
-      print('❌ Error initializing Gemini AI: $e');
+      _logger.e('❌ Error initializing Gemini AI: $e');
       Get.snackbar(
         'Initialization Error',
         'Failed to initialize chatbot. Please check your API key and internet connection.',
@@ -218,27 +228,30 @@ class ChatbotController extends GetxController {
 
   // Send welcome message
   void _sendWelcomeMessage() {
-    messages.add(ChatMessage(
-      text: "Hi! 👋 I'm your Happier meditation assistant.\n\n"
-          "I can help you with:\n"
-          "• Meditation techniques\n"
-          "• Mindfulness practices\n"
-          "• Diet & wellness tips\n"
-          "• Stress management\n"
-          "• Sleep improvement\n\n"
-          "What would you like to know?",
-      isUser: false,
-      timestamp: DateTime.now(),
-    ));
+    messages.add(
+      ChatMessage(
+        text:
+            "Hi! 👋 I'm your Happier meditation assistant.\n\n"
+            "I can help you with:\n"
+            "• Meditation techniques\n"
+            "• Mindfulness practices\n"
+            "• Diet & wellness tips\n"
+            "• Stress management\n"
+            "• Sleep improvement\n\n"
+            "What would you like to know?",
+        isUser: false,
+        timestamp: DateTime.now(),
+      ),
+    );
   }
 
   // Send user message
   Future<void> sendMessage() async {
-    print('🔵 sendMessage() called');
-    print('🔵 isInitialized: ${isInitialized.value}');
-    
+    _logger.d('🔵 sendMessage() called');
+    _logger.d('🔵 isInitialized: ${isInitialized.value}');
+
     if (!isInitialized.value) {
-      print('❌ Chatbot not initialized');
+      _logger.w('❌ Chatbot not initialized');
       Get.snackbar(
         'Chatbot Not Ready',
         'Please wait for the chatbot to initialize...',
@@ -250,15 +263,15 @@ class ChatbotController extends GetxController {
     }
 
     final text = messageController.text.trim();
-    print('🔵 Message text: "$text"');
-    
+    _logger.d('🔵 Message text: "$text"');
+
     if (text.isEmpty) {
-      print('❌ Message is empty');
+      _logger.w('❌ Message is empty');
       return;
     }
 
-    print('✅ Adding user message to chat');
-    
+    _logger.i('✅ Adding user message to chat');
+
     // Add user message
     final userMessage = ChatMessage(
       text: text,
@@ -266,7 +279,7 @@ class ChatbotController extends GetxController {
       timestamp: DateTime.now(),
     );
     messages.add(userMessage);
-    print('✅ User message added, total messages: ${messages.length}');
+    _logger.i('✅ User message added, total messages: ${messages.length}');
 
     messageController.clear();
     isTyping.value = true;
@@ -275,12 +288,14 @@ class ChatbotController extends GetxController {
     await _saveChatHistory();
 
     try {
-      print('🔄 Sending to Gemini AI...');
+      _logger.d('🔄 Sending to Gemini AI...');
       // Send to Gemini AI
       final response = await _chat.sendMessage(Content.text(text));
       final aiText = response.text ?? 'Sorry, I couldn\'t generate a response.';
-      
-      print('✅ Got AI response: ${aiText.length > 50 ? aiText.substring(0, 50) + "..." : aiText}');
+
+      _logger.i(
+        '✅ Got AI response: ${aiText.length > 50 ? aiText.substring(0, 50) + "..." : aiText}',
+      );
 
       // Add AI response
       final aiMessage = ChatMessage(
@@ -289,24 +304,25 @@ class ChatbotController extends GetxController {
         timestamp: DateTime.now(),
       );
       messages.add(aiMessage);
-      print('✅ AI message added, total messages: ${messages.length}');
+      _logger.i('✅ AI message added, total messages: ${messages.length}');
 
       // ✅ Save after AI response
       await _saveChatHistory();
     } catch (e) {
-      print('❌ Error in sendMessage: $e');
+      _logger.e('❌ Error in sendMessage: $e');
       // Error handling
       final errorMessage = ChatMessage(
-        text: 'Sorry, I encountered an error. Please try again or rephrase your question.\n\nError: ${e.toString().contains('not found') ? 'Model compatibility issue' : 'Connection error'}',
+        text:
+            'Sorry, I encountered an error. Please try again or rephrase your question.\n\nError: ${e.toString().contains('not found') ? 'Model compatibility issue' : 'Connection error'}',
         isUser: false,
         timestamp: DateTime.now(),
       );
       messages.add(errorMessage);
       await _saveChatHistory();
-      print('❌ Chatbot error: $e');
+      _logger.e('❌ Chatbot error: $e');
     } finally {
       isTyping.value = false;
-      print('✅ sendMessage() completed');
+      _logger.d('✅ sendMessage() completed');
     }
   }
 

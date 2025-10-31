@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 class SearchViewController extends GetxController {
+  final Logger _logger = Logger();
   final TextEditingController searchController = TextEditingController();
-  
+
   final RxString searchQuery = ''.obs;
-  
+
   // Teachers data
   final List<Map<String, String>> teachers = [
     {'name': 'Joseph Goldstein', 'image': ''},
@@ -15,7 +17,7 @@ class SearchViewController extends GetxController {
     {'name': 'Alexis Santos', 'image': ''},
     {'name': 'Diana Winston', 'image': ''},
   ];
-  
+
   // Suggested topics
   final List<String> suggestedTopics = [
     'Self-Compassion',
@@ -31,7 +33,7 @@ class SearchViewController extends GetxController {
     'Gratitude',
     'Relationships',
   ];
-  
+
   @override
   void onInit() {
     super.onInit();
@@ -39,17 +41,17 @@ class SearchViewController extends GetxController {
       searchQuery.value = searchController.text;
     });
   }
-  
+
   void onSearchChanged(String query) {
     searchQuery.value = query;
     // Implement search logic here
     if (query.isNotEmpty) {
-      print('🔍 Searching for: $query');
+      _logger.d('🔍 Searching for: $query');
       // In future, filter courses, teachers, topics based on query
       // You can call a search API or filter local data
     }
   }
-  
+
   @override
   void onClose() {
     searchController.dispose();

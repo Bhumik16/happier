@@ -9,7 +9,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// PODCAST EPISODE DETAIL VIEW
 /// ====================
-/// 
+///
 /// Shows episode detail with Play/Resume button and Related episodes
 
 class PodcastEpisodeDetailView extends StatelessWidget {
@@ -18,13 +18,13 @@ class PodcastEpisodeDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<PodcastEpisodeDetailController>();
-    
+
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
     }
-    
+
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -35,49 +35,49 @@ class PodcastEpisodeDetailView extends StatelessWidget {
                 child: CircularProgressIndicator(color: theme.accentColor),
               );
             }
-            
+
             return SafeArea(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
                     // Top Bar
                     _buildTopBar(controller, theme),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Episode Cover
                     _buildCoverImage(controller, theme),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Subscriber Badge
                     _buildSubscriberBadge(),
-                    
+
                     const SizedBox(height: 16),
-                    
+
                     // Episode Title
                     _buildEpisodeTitle(controller, theme),
-                    
+
                     const SizedBox(height: 8),
-                    
+
                     // Podcast Name
                     _buildPodcastName(controller),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Play/Resume Button
                     _buildPlayButton(controller, theme),
-                    
+
                     const SizedBox(height: 40),
-                    
+
                     // Episode Notes
                     _buildEpisodeNotes(controller, theme),
-                    
+
                     const SizedBox(height: 20),
-                    
+
                     // Related Episodes
                     _buildRelatedEpisodes(controller, theme),
-                    
+
                     const SizedBox(height: 40),
                   ],
                 ),
@@ -88,12 +88,15 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // TOP BAR
   // ====================
-  
-  Widget _buildTopBar(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildTopBar(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
@@ -104,7 +107,7 @@ class PodcastEpisodeDetailView extends StatelessWidget {
             onPressed: () => NavigationHelper.goBackSimple(),
             icon: Icon(Icons.arrow_back, color: theme.iconPrimary, size: 28),
           ),
-          
+
           // Right Actions
           Row(
             children: [
@@ -119,7 +122,7 @@ class PodcastEpisodeDetailView extends StatelessWidget {
                 },
                 icon: Icon(Icons.download, color: theme.iconPrimary, size: 24),
               ),
-              
+
               // Share Button
               IconButton(
                 onPressed: () {
@@ -131,28 +134,37 @@ class PodcastEpisodeDetailView extends StatelessWidget {
                 },
                 icon: Icon(Icons.share, color: theme.iconPrimary, size: 24),
               ),
-              
+
               // Favorite Button
-              Obx(() => IconButton(
-                onPressed: controller.toggleFavorite,
-                icon: Icon(
-                  controller.isFavorite ? Icons.favorite : Icons.favorite_border,
-                  color: controller.isFavorite ? Colors.red : theme.iconPrimary,
-                  size: 24,
+              Obx(
+                () => IconButton(
+                  onPressed: controller.toggleFavorite,
+                  icon: Icon(
+                    controller.isFavorite
+                        ? Icons.favorite
+                        : Icons.favorite_border,
+                    color: controller.isFavorite
+                        ? Colors.red
+                        : theme.iconPrimary,
+                    size: 24,
+                  ),
                 ),
-              )),
+              ),
             ],
           ),
         ],
       ),
     );
   }
-  
+
   // ====================
   // COVER IMAGE
   // ====================
-  
-  Widget _buildCoverImage(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildCoverImage(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     return Center(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
@@ -173,17 +185,17 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // SUBSCRIBER BADGE
   // ====================
-  
+
   Widget _buildSubscriberBadge() {
     return Center(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.amber.withOpacity(0.2),
+          color: Colors.amber.withValues(alpha: 0.2),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: Colors.amber, width: 1),
         ),
@@ -205,12 +217,15 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // EPISODE TITLE
   // ====================
-  
-  Widget _buildEpisodeTitle(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildEpisodeTitle(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Text(
@@ -226,27 +241,27 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // PODCAST NAME
   // ====================
-  
+
   Widget _buildPodcastName(PodcastEpisodeDetailController controller) {
     return Text(
       controller.episode!.podcastName,
-      style: const TextStyle(
-        color: Colors.amber,
-        fontWeight: FontWeight.w600,
-      ),
+      style: const TextStyle(color: Colors.amber, fontWeight: FontWeight.w600),
       textAlign: TextAlign.center,
     );
   }
-  
+
   // ====================
   // PLAY BUTTON (✅ ALWAYS BLACK!)
   // ====================
-  
-  Widget _buildPlayButton(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildPlayButton(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     return GestureDetector(
       onTap: controller.playEpisode,
       child: Container(
@@ -277,16 +292,19 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // EPISODE NOTES
   // ====================
-  
-  Widget _buildEpisodeNotes(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildEpisodeNotes(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     if (controller.episode!.description == null) {
       return const SizedBox.shrink();
     }
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
@@ -305,38 +323,35 @@ class PodcastEpisodeDetailView extends StatelessWidget {
               ),
               Text(
                 controller.episode!.duration,
-                style: TextStyle(
-                  color: theme.textSecondary,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: theme.textSecondary, fontSize: 14),
               ),
             ],
           ),
           const SizedBox(height: 12),
           Text(
             controller.episode!.description!,
-            style: TextStyle(
-              color: theme.textPrimary,
-              height: 1.5,
-            ),
+            style: TextStyle(color: theme.textPrimary, height: 1.5),
           ),
         ],
       ),
     );
   }
-  
+
   // ====================
   // RELATED EPISODES
   // ====================
-  
-  Widget _buildRelatedEpisodes(PodcastEpisodeDetailController controller, AppTheme theme) {
+
+  Widget _buildRelatedEpisodes(
+    PodcastEpisodeDetailController controller,
+    AppTheme theme,
+  ) {
     final related = controller.allEpisodes
         .where((ep) => ep.id != controller.episode!.id)
         .take(3)
         .toList();
-    
+
     if (related.isEmpty) return const SizedBox.shrink();
-    
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -352,7 +367,7 @@ class PodcastEpisodeDetailView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 16),
-        
+
         // Related Episodes List
         ListView.separated(
           shrinkWrap: true,
@@ -367,11 +382,11 @@ class PodcastEpisodeDetailView extends StatelessWidget {
       ],
     );
   }
-  
+
   // ====================
   // RELATED EPISODE ITEM
   // ====================
-  
+
   Widget _buildRelatedEpisodeItem(
     PodcastEpisodeModel episode,
     PodcastEpisodeDetailController controller,
@@ -394,13 +409,17 @@ class PodcastEpisodeDetailView extends StatelessWidget {
                   width: 70,
                   height: 70,
                   color: theme.cardColor,
-                  child: Icon(Icons.podcasts, color: theme.textSecondary, size: 30),
+                  child: Icon(
+                    Icons.podcasts,
+                    color: theme.textSecondary,
+                    size: 30,
+                  ),
                 );
               },
             ),
           ),
           const SizedBox(width: 12),
-          
+
           // Info
           Expanded(
             child: Column(
@@ -418,10 +437,7 @@ class PodcastEpisodeDetailView extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   'Episode • ${episode.podcastName}',
-                  style: TextStyle(
-                    color: theme.textSecondary,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: theme.textSecondary, fontSize: 12),
                 ),
               ],
             ),

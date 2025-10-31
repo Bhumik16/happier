@@ -7,19 +7,16 @@ import '../data/models/short_model.dart';
 /// ====================
 /// PRACTICE VIDEO CARD
 /// ====================
-/// 
+///
 /// Video thumbnail card with play button overlay
 
 class PracticeVideoCard extends StatelessWidget {
   final ShortModel practice;
   final VoidCallback onTap;
   final AppTheme _theme = AppTheme();
-  
-  PracticeVideoCard({
-    Key? key,
-    required this.practice,
-    required this.onTap,
-  }) : super(key: key);
+
+  PracticeVideoCard({Key? key, required this.practice, required this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +39,9 @@ class PracticeVideoCard extends StatelessWidget {
                 Stack(
                   children: [
                     ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
                       child: Container(
                         height: 180,
                         width: double.infinity,
@@ -66,7 +65,7 @@ class PracticeVideoCard extends StatelessWidget {
                               ),
                       ),
                     ),
-                    
+
                     // Play Button Overlay
                     Positioned.fill(
                       child: Center(
@@ -75,7 +74,7 @@ class PracticeVideoCard extends StatelessWidget {
                           height: 64,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.white.withOpacity(0.9),
+                            color: Colors.white.withValues(alpha: 0.9),
                           ),
                           child: const Icon(
                             Icons.play_arrow,
@@ -87,7 +86,7 @@ class PracticeVideoCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                
+
                 // Content
                 Padding(
                   padding: const EdgeInsets.all(10),

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../core/theme/app_theme.dart';
-import '../../core/routes/app_routes.dart';
-import '../home_view/screens/home_view.dart';
-import '../courses_view/screens/courses_view.dart';
-import '../singles_view/screens/singles_view.dart';
-import '../sleeps_view/screens/sleeps_view.dart';
-import '../shorts_view/screens/shorts_view.dart';
-import '../../common_widgets/bottom_nav_bar.dart';
-import '../../controllers/courses_controller/courses_bindings.dart';
-import '../../controllers/singles_controller/singles_bindings.dart';
-import '../../controllers/sleeps_controller/sleeps_bindings.dart';
-import '../../controllers/shorts_controller/shorts_bindings.dart';
-import '../../controllers/appearance_controller/appearance_controller.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/routes/app_routes.dart';
+import '../../home_view/screens/home_view.dart';
+import '../../courses_view/screens/courses_view.dart';
+import '../../singles_view/screens/singles_view.dart';
+import '../../sleeps_view/screens/sleeps_view.dart';
+import '../../shorts_view/screens/shorts_view.dart';
+import '../../../common_widgets/bottom_nav_bar.dart';
+import '../../../controllers/courses_controller/courses_bindings.dart';
+import '../../../controllers/singles_controller/singles_bindings.dart';
+import '../../../controllers/sleeps_controller/sleeps_bindings.dart';
+import '../../../controllers/shorts_controller/shorts_bindings.dart';
+import '../../../controllers/appearance_controller/appearance_controller.dart';
 
 /// ====================
 /// MAIN SCAFFOLD

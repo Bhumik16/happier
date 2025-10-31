@@ -12,7 +12,7 @@ class NotificationsView extends GetView<NotificationsController> {
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         final theme = appearanceController.theme;
-        
+
         return Scaffold(
           backgroundColor: theme.backgroundColor,
           appBar: AppBar(
@@ -44,7 +44,7 @@ class NotificationsView extends GetView<NotificationsController> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // DND While Meditating
               _buildToggleItem(
                 title: 'DND While Meditating',
@@ -52,9 +52,9 @@ class NotificationsView extends GetView<NotificationsController> {
                 onChanged: controller.toggleDndWhileMeditating,
                 theme: theme,
               ),
-              
+
               const SizedBox(height: 32),
-              
+
               // Meditation Section
               Text(
                 'Meditation',
@@ -65,7 +65,7 @@ class NotificationsView extends GetView<NotificationsController> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Daily Reminder
               _buildToggleItem(
                 title: 'Daily Reminder',
@@ -73,42 +73,44 @@ class NotificationsView extends GetView<NotificationsController> {
                 onChanged: controller.toggleDailyReminder,
                 theme: theme,
               ),
-              
+
               const SizedBox(height: 16),
-              
+
               // Schedule
-              Obx(() => InkWell(
-                onTap: controller.dailyReminder.value 
-                    ? controller.openSchedulePicker 
-                    : null,
-                child: Opacity(
-                  opacity: controller.dailyReminder.value ? 1.0 : 0.5,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Schedule',
-                        style: TextStyle(
-                          color: theme.textPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+              Obx(
+                () => InkWell(
+                  onTap: controller.dailyReminder.value
+                      ? controller.openSchedulePicker
+                      : null,
+                  child: Opacity(
+                    opacity: controller.dailyReminder.value ? 1.0 : 0.5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Schedule',
+                          style: TextStyle(
+                            color: theme.textPrimary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        controller.scheduleTime.value,
-                        style: TextStyle(
-                          color: theme.textSecondary,
-                          fontSize: 16,
+                        const SizedBox(height: 4),
+                        Text(
+                          controller.scheduleTime.value,
+                          style: TextStyle(
+                            color: theme.textSecondary,
+                            fontSize: 16,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              )),
-              
+              ),
+
               const SizedBox(height: 32),
-              
+
               // Streak Section
               Text(
                 'Streak',
@@ -119,7 +121,7 @@ class NotificationsView extends GetView<NotificationsController> {
                 ),
               ),
               const SizedBox(height: 16),
-              
+
               // Streak Break Warning
               _buildToggleItem(
                 title: 'Streak Break Warning',
@@ -133,35 +135,39 @@ class NotificationsView extends GetView<NotificationsController> {
       },
     );
   }
-  
+
   Widget _buildToggleItem({
     required String title,
     required RxBool value,
     required Function(bool) onChanged,
     required dynamic theme,
   }) {
-    return Obx(() => Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            color: theme.textPrimary,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
+    return Obx(
+      () => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: theme.textPrimary,
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
           ),
-        ),
-        Switch(
-          value: value.value,
-          onChanged: onChanged,
-          activeColor: theme.accentColor,
-          activeTrackColor: theme.accentColor.withOpacity(0.5),
-          inactiveThumbColor: theme.isDark ? Colors.grey : const Color(0xFFB8B8B8),
-          inactiveTrackColor: theme.isDark 
-              ? Colors.grey.withOpacity(0.3) 
-              : const Color(0xFFD8D8D8),
-        ),
-      ],
-    ));
+          Switch(
+            value: value.value,
+            onChanged: onChanged,
+            activeColor: theme.accentColor,
+            activeTrackColor: theme.accentColor.withValues(alpha: 0.5),
+            inactiveThumbColor: theme.isDark
+                ? Colors.grey
+                : const Color(0xFFB8B8B8),
+            inactiveTrackColor: theme.isDark
+                ? Colors.grey.withValues(alpha: 0.3)
+                : const Color(0xFFD8D8D8),
+          ),
+        ],
+      ),
+    );
   }
 }

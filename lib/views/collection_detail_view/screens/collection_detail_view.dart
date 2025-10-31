@@ -8,7 +8,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// COLLECTION DETAIL VIEW
 /// ====================
-/// 
+///
 /// Shows collection info with gradient hero + featured sessions list
 
 class CollectionDetailView extends StatelessWidget {
@@ -18,7 +18,7 @@ class CollectionDetailView extends StatelessWidget {
   Widget build(BuildContext context) {
     final controller = Get.find<CollectionDetailController>();
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -26,9 +26,7 @@ class CollectionDetailView extends StatelessWidget {
           body: Obx(() {
             if (controller.isLoading) {
               return Center(
-                child: CircularProgressIndicator(
-                  color: theme.accentColor,
-                ),
+                child: CircularProgressIndicator(color: theme.accentColor),
               );
             }
 
@@ -45,7 +43,10 @@ class CollectionDetailView extends StatelessWidget {
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: controller.collection.gradientColors
-                            .map((c) => Color(int.parse(c.substring(2), radix: 16)))
+                            .map(
+                              (c) =>
+                                  Color(int.parse(c.substring(2), radix: 16)),
+                            )
                             .toList(),
                       ),
                     ),
@@ -57,39 +58,59 @@ class CollectionDetailView extends StatelessWidget {
                             top: 8,
                             left: 8,
                             child: IconButton(
-                              icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                              icon: const Icon(
+                                Icons.arrow_back,
+                                color: Colors.white,
+                                size: 28,
+                              ),
                               onPressed: () => NavigationHelper.goBackSimple(),
                             ),
                           ),
-                          
+
                           // Share button
                           Positioned(
                             top: 8,
                             right: 8,
                             child: IconButton(
-                              icon: const Icon(Icons.share, color: Colors.white, size: 28),
+                              icon: const Icon(
+                                Icons.share,
+                                color: Colors.white,
+                                size: 28,
+                              ),
                               onPressed: () {
-                                Get.snackbar('Share', 'Share feature coming soon!');
+                                Get.snackbar(
+                                  'Share',
+                                  'Share feature coming soon!',
+                                );
                               },
                             ),
                           ),
-                          
+
                           // Cast button
                           Positioned(
                             top: 8,
                             right: 56,
                             child: IconButton(
-                              icon: const Icon(Icons.cast, color: Colors.white, size: 28),
+                              icon: const Icon(
+                                Icons.cast,
+                                color: Colors.white,
+                                size: 28,
+                              ),
                               onPressed: () {
-                                Get.snackbar('Cast', 'Cast feature coming soon!');
+                                Get.snackbar(
+                                  'Cast',
+                                  'Cast feature coming soon!',
+                                );
                               },
                             ),
                           ),
-                          
+
                           // Collection title and description
                           Center(
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 40),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                              ),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
@@ -111,7 +132,8 @@ class CollectionDetailView extends StatelessWidget {
                                     ),
                                     textAlign: TextAlign.center,
                                   ),
-                                  if (controller.collection.description != null) ...[
+                                  if (controller.collection.description !=
+                                      null) ...[
                                     const SizedBox(height: 20),
                                     // Decorative line
                                     Container(
@@ -161,19 +183,14 @@ class CollectionDetailView extends StatelessWidget {
                 // SESSIONS LIST
                 // ====================
                 SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (context, index) {
-                      final session = controller.sessions[index];
-                      return _buildSessionListItem(session, controller, theme);
-                    },
-                    childCount: controller.sessions.length,
-                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final session = controller.sessions[index];
+                    return _buildSessionListItem(session, controller, theme);
+                  }, childCount: controller.sessions.length),
                 ),
 
                 // Bottom spacing
-                const SliverToBoxAdapter(
-                  child: SizedBox(height: 100),
-                ),
+                const SliverToBoxAdapter(child: SizedBox(height: 100)),
               ],
             );
           }),
@@ -198,10 +215,7 @@ class CollectionDetailView extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.cardColor,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: theme.borderColor,
-            width: 1,
-          ),
+          border: Border.all(color: theme.borderColor, width: 1),
         ),
         child: Row(
           children: [
@@ -211,16 +225,12 @@ class CollectionDetailView extends StatelessWidget {
               child: Container(
                 width: 60,
                 height: 60,
-                color: theme.accentColor.withOpacity(0.3),
-                child: Icon(
-                  Icons.person,
-                  color: theme.accentColor,
-                  size: 32,
-                ),
+                color: theme.accentColor.withValues(alpha: 0.3),
+                child: Icon(Icons.person, color: theme.accentColor, size: 32),
               ),
             ),
             const SizedBox(width: 16),
-            
+
             // Session info
             Expanded(
               child: Column(
@@ -239,10 +249,7 @@ class CollectionDetailView extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     '${session.durationMinutes} - 15 min  •  ${session.instructor}',
-                    style: TextStyle(
-                      color: theme.textSecondary,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: theme.textSecondary, fontSize: 14),
                   ),
                 ],
               ),

@@ -6,7 +6,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// SLEEP DETAIL VIEW
 /// ====================
-/// 
+///
 /// Shows sleep session details with play button and duration selector
 
 class SleepDetailView extends StatelessWidget {
@@ -15,11 +15,11 @@ class SleepDetailView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<SleepDetailController>();
-    
+
     return Scaffold(
       body: Obx(() {
         final sleep = controller.sleep;
-        
+
         // ✅ Gradient background stays the same - purple/pink looks great in both themes
         return Container(
           decoration: const BoxDecoration(
@@ -27,7 +27,7 @@ class SleepDetailView extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFB74B9E),  // Purple/Pink gradient
+                Color(0xFFB74B9E), // Purple/Pink gradient
                 Color(0xFF7B2D7F),
               ],
             ),
@@ -45,28 +45,47 @@ class SleepDetailView extends StatelessWidget {
                     children: [
                       // Back button
                       IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white, size: 28),
+                        icon: const Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                          size: 28,
+                        ),
                         onPressed: () => NavigationHelper.goBackSimple(),
                       ),
-                      
+
                       // Right icons
                       Row(
                         children: [
                           // Download button (simplified - no status tracking)
                           IconButton(
-                            icon: const Icon(Icons.download, color: Colors.white, size: 28),
+                            icon: const Icon(
+                              Icons.download,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                             onPressed: controller.downloadSleep,
                           ),
                           IconButton(
-                            icon: const Icon(Icons.share, color: Colors.white, size: 28),
+                            icon: const Icon(
+                              Icons.share,
+                              color: Colors.white,
+                              size: 28,
+                            ),
                             onPressed: () {
-                              Get.snackbar('Share', 'Share feature coming soon!');
+                              Get.snackbar(
+                                'Share',
+                                'Share feature coming soon!',
+                              );
                             },
                           ),
                           IconButton(
                             icon: Icon(
-                              controller.isFavorite ? Icons.favorite : Icons.favorite_border,
-                              color: controller.isFavorite ? Colors.red : Colors.white,
+                              controller.isFavorite
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              color: controller.isFavorite
+                                  ? Colors.red
+                                  : Colors.white,
                               size: 28,
                             ),
                             onPressed: controller.toggleFavorite,
@@ -76,7 +95,7 @@ class SleepDetailView extends StatelessWidget {
                     ],
                   ),
                 ),
-                
+
                 Expanded(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -84,7 +103,7 @@ class SleepDetailView extends StatelessWidget {
                       child: Column(
                         children: [
                           const SizedBox(height: 40),
-                          
+
                           // ====================
                           // TITLE SECTION
                           // ====================
@@ -106,9 +125,9 @@ class SleepDetailView extends StatelessWidget {
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          
+
                           const SizedBox(height: 60),
-                          
+
                           // ====================
                           // PLAY BUTTON
                           // ====================
@@ -131,17 +150,18 @@ class SleepDetailView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          
+
                           const SizedBox(height: 60),
-                          
+
                           // ====================
                           // DESCRIPTION SECTION
                           // ====================
-                          if (sleep.description != null && sleep.description!.isNotEmpty)
+                          if (sleep.description != null &&
+                              sleep.description!.isNotEmpty)
                             Container(
                               padding: const EdgeInsets.all(24),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.1),
+                                color: Colors.white.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(16),
                               ),
                               child: Text(
@@ -154,9 +174,9 @@ class SleepDetailView extends StatelessWidget {
                                 textAlign: TextAlign.center,
                               ),
                             ),
-                          
+
                           const SizedBox(height: 40),
-                          
+
                           // ====================
                           // DURATION DROPDOWN (Only if has range)
                           // ====================
@@ -164,9 +184,12 @@ class SleepDetailView extends StatelessWidget {
                             GestureDetector(
                               onTap: controller.showDurationPicker,
                               child: Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 40,
+                                  vertical: 16,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white.withOpacity(0.2),
+                                  color: Colors.white.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(30),
                                   border: Border.all(
                                     color: Colors.white,
@@ -196,7 +219,7 @@ class SleepDetailView extends StatelessWidget {
                             ),
                             const SizedBox(height: 40),
                           ],
-                          
+
                           const SizedBox(height: 40),
                         ],
                       ),

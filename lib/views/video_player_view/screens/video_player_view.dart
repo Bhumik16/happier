@@ -7,7 +7,7 @@ import '../../../core/utils/navigation_helper.dart';
 /// ====================
 /// VIDEO PLAYER VIEW
 /// ====================
-/// 
+///
 /// Full-screen video player with Learn/Meditate tabs
 
 class VideoPlayerView extends StatelessWidget {
@@ -16,27 +16,27 @@ class VideoPlayerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<VideoPlayerController>();
-    
+
     return Scaffold(
       backgroundColor: Colors.black,
       body: Obx(() {
         if (controller.isLoading) {
           return _buildLoadingView();
         }
-        
+
         if (!controller.isInitialized) {
           return _buildErrorView();
         }
-        
+
         return _buildVideoPlayer(controller);
       }),
     );
   }
-  
+
   // ====================
   // VIDEO PLAYER
   // ====================
-  
+
   Widget _buildVideoPlayer(VideoPlayerController controller) {
     return Stack(
       fit: StackFit.expand,
@@ -48,14 +48,16 @@ class VideoPlayerView extends StatelessWidget {
             child: video_player.VideoPlayer(controller.videoController!),
           ),
         ),
-        
+
         // Controls Overlay
-        Obx(() => AnimatedOpacity(
-          opacity: controller.showControls ? 1.0 : 0.0,
-          duration: const Duration(milliseconds: 300),
-          child: _buildControlsOverlay(controller),
-        )),
-        
+        Obx(
+          () => AnimatedOpacity(
+            opacity: controller.showControls ? 1.0 : 0.0,
+            duration: const Duration(milliseconds: 300),
+            child: _buildControlsOverlay(controller),
+          ),
+        ),
+
         // Tap to show/hide controls
         GestureDetector(
           onTap: controller.toggleControls,
@@ -65,11 +67,11 @@ class VideoPlayerView extends StatelessWidget {
       ],
     );
   }
-  
+
   // ====================
   // CONTROLS OVERLAY
   // ====================
-  
+
   Widget _buildControlsOverlay(VideoPlayerController controller) {
     return Container(
       decoration: BoxDecoration(
@@ -77,10 +79,10 @@ class VideoPlayerView extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: [
-            Colors.black.withOpacity(0.7),
+            Colors.black.withValues(alpha: 0.7),
             Colors.transparent,
             Colors.transparent,
-            Colors.black.withOpacity(0.7),
+            Colors.black.withValues(alpha: 0.7),
           ],
           stops: const [0.0, 0.3, 0.7, 1.0],
         ),
@@ -90,33 +92,33 @@ class VideoPlayerView extends StatelessWidget {
           children: [
             // Header (Learn/Meditate tabs)
             _buildHeader(controller),
-            
+
             const Spacer(),
-            
+
             // Title & Session
             _buildTitleSection(controller),
-            
+
             const SizedBox(height: 20),
-            
+
             // Playback Controls
             _buildPlaybackControls(controller),
-            
+
             const SizedBox(height: 20),
-            
+
             // Progress Bar
             _buildProgressBar(controller),
-            
+
             const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
-  
+
   // ====================
   // HEADER (WITH TABS)
   // ====================
-  
+
   Widget _buildHeader(VideoPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -126,7 +128,7 @@ class VideoPlayerView extends StatelessWidget {
           // Learn/Meditate Toggle (Learn selected)
           Container(
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(30),
             ),
             padding: const EdgeInsets.all(4),
@@ -137,7 +139,7 @@ class VideoPlayerView extends StatelessWidget {
               ],
             ),
           ),
-          
+
           // Favorite Button
           IconButton(
             onPressed: () {
@@ -153,7 +155,7 @@ class VideoPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   Widget _buildTabButton(String text, bool isSelected, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -174,11 +176,11 @@ class VideoPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // TITLE SECTION
   // ====================
-  
+
   Widget _buildTitleSection(VideoPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -197,7 +199,7 @@ class VideoPlayerView extends StatelessWidget {
           Text(
             'Session ${controller.session?.sessionNumber ?? 1}',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 16,
             ),
           ),
@@ -205,11 +207,11 @@ class VideoPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // PLAYBACK CONTROLS
   // ====================
-  
+
   Widget _buildPlaybackControls(VideoPlayerController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -235,94 +237,88 @@ class VideoPlayerView extends StatelessWidget {
             ),
           ),
         ),
-        
+
         const SizedBox(width: 20),
-        
+
         // Rewind 10s
         IconButton(
           onPressed: () => controller.seekBackward(10),
-          icon: const Icon(
-            Icons.replay_10,
-            color: Colors.white,
-            size: 36,
+          icon: const Icon(Icons.replay_10, color: Colors.white, size: 36),
+        ),
+
+        const SizedBox(width: 20),
+
+        // Play/Pause
+        Obx(
+          () => IconButton(
+            onPressed: controller.togglePlayPause,
+            icon: Icon(
+              controller.isPlaying ? Icons.pause : Icons.play_arrow,
+              color: Colors.white,
+              size: 48,
+            ),
           ),
         ),
-        
+
         const SizedBox(width: 20),
-        
-        // Play/Pause
-        Obx(() => IconButton(
-          onPressed: controller.togglePlayPause,
-          icon: Icon(
-            controller.isPlaying ? Icons.pause : Icons.play_arrow,
-            color: Colors.white,
-            size: 48,
-          ),
-        )),
-        
-        const SizedBox(width: 20),
-        
+
         // Forward 10s
         IconButton(
           onPressed: () => controller.seekForward(10),
-          icon: const Icon(
-            Icons.forward_10,
-            color: Colors.white,
-            size: 36,
-          ),
+          icon: const Icon(Icons.forward_10, color: Colors.white, size: 36),
         ),
       ],
     );
   }
-  
+
   // ====================
   // PROGRESS BAR
   // ====================
-  
+
   Widget _buildProgressBar(VideoPlayerController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40),
       child: Column(
         children: [
-          Obx(() => SliderTheme(
-            data: SliderThemeData(
-              trackHeight: 3,
-              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
-              overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
-              activeTrackColor: Colors.white,
-              inactiveTrackColor: Colors.white.withOpacity(0.3),
-              thumbColor: Colors.white,
-              overlayColor: Colors.white.withOpacity(0.2),
+          Obx(
+            () => SliderTheme(
+              data: SliderThemeData(
+                trackHeight: 3,
+                thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 6),
+                overlayShape: const RoundSliderOverlayShape(overlayRadius: 14),
+                activeTrackColor: Colors.white,
+                inactiveTrackColor: Colors.white.withValues(alpha: 0.3),
+                thumbColor: Colors.white,
+                overlayColor: Colors.white.withValues(alpha: 0.2),
+              ),
+              child: Slider(
+                value: controller.progress,
+                onChanged: (value) {
+                  final position = controller.duration * value;
+                  controller.seek(position);
+                },
+              ),
             ),
-            child: Slider(
-              value: controller.progress,
-              onChanged: (value) {
-                final position = controller.duration * value;
-                controller.seek(position);
-              },
-            ),
-          )),
-          
+          ),
+
           // Time Labels
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Obx(() => Text(
-                  controller.positionText,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+                Obx(
+                  () => Text(
+                    controller.positionText,
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
-                )),
-                Obx(() => Text(
-                  controller.durationText,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+                ),
+                Obx(
+                  () => Text(
+                    controller.durationText,
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
                   ),
-                )),
+                ),
               ],
             ),
           ),
@@ -330,40 +326,29 @@ class VideoPlayerView extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // LOADING VIEW
   // ====================
-  
+
   Widget _buildLoadingView() {
-    return const Center(
-      child: CircularProgressIndicator(
-        color: Colors.white,
-      ),
-    );
+    return const Center(child: CircularProgressIndicator(color: Colors.white));
   }
-  
+
   // ====================
   // ERROR VIEW
   // ====================
-  
+
   Widget _buildErrorView() {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
-            Icons.error_outline,
-            color: Colors.white,
-            size: 60,
-          ),
+          const Icon(Icons.error_outline, color: Colors.white, size: 60),
           const SizedBox(height: 20),
           const Text(
             'Failed to load video',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
+            style: TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 20),
           ElevatedButton(

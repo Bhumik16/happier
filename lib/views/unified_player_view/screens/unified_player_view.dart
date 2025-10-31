@@ -80,10 +80,10 @@ class UnifiedPlayerView extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.black.withOpacity(0.7),
+              Colors.black.withValues(alpha: 0.7),
               Colors.transparent,
               Colors.transparent,
-              Colors.black.withOpacity(0.7),
+              Colors.black.withValues(alpha: 0.7),
             ],
             stops: const [0.0, 0.3, 0.7, 1.0],
           ),
@@ -161,9 +161,9 @@ class UnifiedPlayerView extends StatelessWidget {
           Obx(() => SliderTheme(
             data: SliderThemeData(
               activeTrackColor: Colors.white,
-              inactiveTrackColor: Colors.white.withOpacity(0.3),
+              inactiveTrackColor: Colors.white.withValues(alpha: 0.3),
               thumbColor: Colors.white,
-              overlayColor: Colors.white.withOpacity(0.2),
+              overlayColor: Colors.white.withValues(alpha: 0.2),
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
               trackHeight: 3,
             ),
@@ -249,7 +249,7 @@ class UnifiedPlayerView extends StatelessWidget {
           Text(
             'Time Remaining',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 16,
               letterSpacing: 1.2,
             ),
@@ -353,7 +353,7 @@ class UnifiedPlayerView extends StatelessWidget {
               Text(
                 'Speed: ',
                 style: TextStyle(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   fontSize: 14,
                 ),
               ),
@@ -384,9 +384,9 @@ class UnifiedPlayerView extends StatelessWidget {
           Obx(() => SliderTheme(
             data: SliderThemeData(
               activeTrackColor: Colors.white,
-              inactiveTrackColor: Colors.white.withOpacity(0.3),
+              inactiveTrackColor: Colors.white.withValues(alpha: 0.3),
               thumbColor: Colors.white,
-              overlayColor: Colors.white.withOpacity(0.2),
+              overlayColor: Colors.white.withValues(alpha: 0.2),
               thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
               trackHeight: 3,
             ),
@@ -406,14 +406,14 @@ class UnifiedPlayerView extends StatelessWidget {
                 Obx(() => Text(
                   controller.audioPositionText,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 12,
                   ),
                 )),
                 Obx(() => Text(
                   controller.audioDurationText,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 12,
                   ),
                 )),
@@ -450,7 +450,7 @@ class UnifiedPlayerView extends StatelessWidget {
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(30),
                 ),
                 padding: const EdgeInsets.all(4),
@@ -525,7 +525,7 @@ class UnifiedPlayerView extends StatelessWidget {
           Text(
             'Session ${controller.session?.sessionNumber ?? 1}',
             style: TextStyle(
-              color: Colors.white.withOpacity(0.9),
+              color: Colors.white.withValues(alpha: 0.9),
               fontSize: 16,
             ),
           ),

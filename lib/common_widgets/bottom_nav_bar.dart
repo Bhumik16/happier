@@ -6,14 +6,14 @@ import '../controllers/appearance_controller/appearance_controller.dart';
 /// ====================
 /// BOTTOM NAVIGATION BAR
 /// ====================
-/// 
+///
 /// Custom bottom navigation with 5 tabs
 /// Label only shows for selected tab
 class CustomBottomNavBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
   final AppTheme _theme = AppTheme();
-  
+
   CustomBottomNavBar({
     Key? key,
     required this.currentIndex,
@@ -30,7 +30,7 @@ class CustomBottomNavBar extends StatelessWidget {
             color: _theme.bottomNavBackground,
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 10,
                 offset: const Offset(0, -2),
               ),
@@ -50,10 +50,10 @@ class CustomBottomNavBar extends StatelessWidget {
       },
     );
   }
-  
+
   Widget _buildNavItem(int index, IconData icon, String label) {
     final isSelected = currentIndex == index;
-    
+
     return Expanded(
       child: GestureDetector(
         onTap: () => onTap(index),
@@ -68,20 +68,20 @@ class CustomBottomNavBar extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
-                  color: isSelected 
-                      ? _theme.bottomNavSelected 
+                  color: isSelected
+                      ? _theme.bottomNavSelected
                       : Colors.transparent,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Icon(
                   icon,
-                  color: isSelected 
-                      ? _theme.bottomNavUnselected 
+                  color: isSelected
+                      ? _theme.bottomNavUnselected
                       : _theme.bottomNavUnselected,
                   size: 24,
                 ),
               ),
-              
+
               // Label (ONLY shows when selected)
               if (isSelected) ...[
                 const SizedBox(height: 4),

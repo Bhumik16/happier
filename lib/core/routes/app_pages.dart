@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import '../../views/splash_view/screens/splash_view.dart';
-import '../../views/main_scaffold/main_scaffold.dart';
+import '../../views/main_scaffold/screens/main_scaffold.dart';
 import '../../views/course_detail_view/screens/course_detail_view.dart';
 import '../../views/video_player_view/screens/video_player_view.dart';
 import '../../views/audio_player_view/screens/audio_player_view.dart';

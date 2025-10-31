@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 import '../../../controllers/chatbot_controller/chatbot_controller.dart';
 import '../../../controllers/appearance_controller/appearance_controller.dart';
@@ -14,8 +15,9 @@ class ChatbotView extends StatefulWidget {
 }
 
 class _ChatbotViewState extends State<ChatbotView> {
+  final Logger _logger = Logger();
   final ScrollController _scrollController = ScrollController();
-  
+
   @override
   void initState() {
     super.initState();
@@ -23,13 +25,13 @@ class _ChatbotViewState extends State<ChatbotView> {
       _scrollToBottom();
     });
   }
-  
+
   @override
   void dispose() {
     _scrollController.dispose();
     super.dispose();
   }
-  
+
   void _scrollToBottom() {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
@@ -43,11 +45,11 @@ class _ChatbotViewState extends State<ChatbotView> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ChatbotController>();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         final theme = appearanceController.theme;
-        
+
         return Scaffold(
           backgroundColor: theme.scaffoldBackgroundColor,
           appBar: AppBar(
@@ -59,13 +61,14 @@ class _ChatbotViewState extends State<ChatbotView> {
                 try {
                   if (Navigator.canPop(context)) {
                     Navigator.pop(context);
-                  } else if (Get.previousRoute.isNotEmpty && Get.previousRoute != AppRoutes.chatbot) {
+                  } else if (Get.previousRoute.isNotEmpty &&
+                      Get.previousRoute != AppRoutes.chatbot) {
                     Get.back();
                   } else {
                     Get.offAllNamed(AppRoutes.main);
                   }
                 } catch (e) {
-                  print('⚠️ Back navigation error: $e');
+                  _logger.w('⚠️ Back navigation error: $e');
                   Get.offAllNamed(AppRoutes.main);
                 }
               },
@@ -81,7 +84,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFFFDB813).withOpacity(0.3),
+                        color: const Color(0xFFFDB813).withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -106,16 +109,18 @@ class _ChatbotViewState extends State<ChatbotView> {
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Obx(() => Text(
-                        controller.isTyping.value ? 'Typing...' : 'Online',
-                        style: TextStyle(
-                          color: controller.isTyping.value 
-                              ? const Color(0xFFFDB813) 
-                              : theme.textSecondary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
+                      Obx(
+                        () => Text(
+                          controller.isTyping.value ? 'Typing...' : 'Online',
+                          style: TextStyle(
+                            color: controller.isTyping.value
+                                ? const Color(0xFFFDB813)
+                                : theme.textSecondary,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      )),
+                      ),
                     ],
                   ),
                 ),
@@ -137,7 +142,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
                     _scrollToBottom();
                   });
-                  
+
                   if (controller.messages.isEmpty) {
                     return Center(
                       child: Column(
@@ -147,7 +152,9 @@ class _ChatbotViewState extends State<ChatbotView> {
                             width: 80,
                             height: 80,
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFDB813).withOpacity(0.1),
+                              color: const Color(
+                                0xFFFDB813,
+                              ).withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(40),
                             ),
                             child: const Icon(
@@ -169,10 +176,13 @@ class _ChatbotViewState extends State<ChatbotView> {
                       ),
                     );
                   }
-                  
+
                   return ListView.builder(
                     controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     itemCount: controller.messages.length,
                     physics: const BouncingScrollPhysics(),
                     itemBuilder: (context, index) {
@@ -182,22 +192,28 @@ class _ChatbotViewState extends State<ChatbotView> {
                   );
                 }),
               ),
-              
+
               // Typing indicator
               Obx(() {
                 if (!controller.isTyping.value) return const SizedBox.shrink();
                 return Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
                         decoration: BoxDecoration(
                           color: theme.cardColor,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.05),
+                              color: Colors.black.withValues(alpha: 0.05),
                               blurRadius: 4,
                               offset: const Offset(0, 2),
                             ),
@@ -218,7 +234,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                   ),
                 );
               }),
-              
+
               // Input field
               Container(
                 padding: const EdgeInsets.all(16),
@@ -226,7 +242,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                   color: theme.cardColor,
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.08),
+                      color: Colors.black.withValues(alpha: 0.08),
                       blurRadius: 12,
                       offset: const Offset(0, -4),
                     ),
@@ -238,9 +254,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                     children: [
                       Expanded(
                         child: Container(
-                          constraints: const BoxConstraints(
-                            maxHeight: 120,
-                          ),
+                          constraints: const BoxConstraints(maxHeight: 120),
                           child: TextField(
                             controller: controller.messageController,
                             style: TextStyle(
@@ -248,7 +262,8 @@ class _ChatbotViewState extends State<ChatbotView> {
                               fontSize: 15,
                             ),
                             decoration: InputDecoration(
-                              hintText: 'Ask about meditation, diet, wellness...',
+                              hintText:
+                                  'Ask about meditation, diet, wellness...',
                               hintStyle: TextStyle(
                                 color: theme.textSecondary,
                                 fontSize: 14,
@@ -267,7 +282,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                             maxLines: null,
                             textInputAction: TextInputAction.send,
                             onSubmitted: (_) {
-                              print('🟢 TextField onSubmitted');
+                              _logger.d('🟢 TextField onSubmitted');
                               controller.sendMessage();
                             },
                           ),
@@ -276,7 +291,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                       const SizedBox(width: 12),
                       GestureDetector(
                         onTap: () {
-                          print('🟡 BUTTON TAPPED!');
+                          _logger.d('🟡 BUTTON TAPPED!');
                           controller.sendMessage();
                         },
                         child: Container(
@@ -287,7 +302,9 @@ class _ChatbotViewState extends State<ChatbotView> {
                             borderRadius: BorderRadius.circular(25),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFFFDB813).withOpacity(0.3),
+                                color: const Color(
+                                  0xFFFDB813,
+                                ).withValues(alpha: 0.3),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
@@ -310,12 +327,14 @@ class _ChatbotViewState extends State<ChatbotView> {
       },
     );
   }
-  
+
   Widget _buildMessageBubble(ChatMessage message, AppTheme theme, int index) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
-        mainAxisAlignment: message.isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: message.isUser
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!message.isUser) ...[
@@ -327,7 +346,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFFFDB813).withOpacity(0.2),
+                    color: const Color(0xFFFDB813).withValues(alpha: 0.2),
                     blurRadius: 4,
                     offset: const Offset(0, 2),
                   ),
@@ -343,10 +362,15 @@ class _ChatbotViewState extends State<ChatbotView> {
           ],
           Flexible(
             child: Column(
-              crossAxisAlignment: message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+              crossAxisAlignment: message.isUser
+                  ? CrossAxisAlignment.end
+                  : CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
                     color: message.isUser
                         ? const Color(0xFFFDB813)
@@ -359,7 +383,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.05),
+                        color: Colors.black.withValues(alpha: 0.05),
                         blurRadius: 4,
                         offset: const Offset(0, 2),
                       ),
@@ -380,7 +404,7 @@ class _ChatbotViewState extends State<ChatbotView> {
                   child: Text(
                     DateFormat('h:mm a').format(message.timestamp),
                     style: TextStyle(
-                      color: theme.textSecondary.withOpacity(0.7),
+                      color: theme.textSecondary.withValues(alpha: 0.7),
                       fontSize: 11,
                     ),
                   ),
@@ -396,26 +420,22 @@ class _ChatbotViewState extends State<ChatbotView> {
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
-                    theme.textSecondary.withOpacity(0.2),
-                    theme.textSecondary.withOpacity(0.1),
+                    theme.textSecondary.withValues(alpha: 0.2),
+                    theme.textSecondary.withValues(alpha: 0.1),
                   ],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(
-                Icons.person,
-                color: theme.textPrimary,
-                size: 18,
-              ),
+              child: Icon(Icons.person, color: theme.textPrimary, size: 18),
             ),
           ],
         ],
       ),
     );
   }
-  
+
   Widget _buildTypingDot(AppTheme theme, int index) {
     return TweenAnimationBuilder<double>(
       tween: Tween(begin: 0.0, end: 1.0),
@@ -440,14 +460,12 @@ class _ChatbotViewState extends State<ChatbotView> {
       },
     );
   }
-  
+
   void _showClearConfirmation(ChatbotController controller, AppTheme theme) {
     Get.dialog(
       AlertDialog(
         backgroundColor: theme.cardColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Row(
           children: [
             const Icon(Icons.delete_outline, color: Colors.red, size: 24),
@@ -464,10 +482,7 @@ class _ChatbotViewState extends State<ChatbotView> {
         ),
         content: Text(
           'This will delete all messages in this conversation. This action cannot be undone.',
-          style: TextStyle(
-            color: theme.textSecondary,
-            fontSize: 14,
-          ),
+          style: TextStyle(color: theme.textSecondary, fontSize: 14),
         ),
         actions: [
           TextButton(
@@ -499,10 +514,7 @@ class _ChatbotViewState extends State<ChatbotView> {
             ),
             child: const Text(
               'Clear',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ),
         ],

@@ -16,14 +16,14 @@ class MilestonesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(MilestonesController());
-    
+
     // Ensure AppearanceController is initialized
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
     }
-    
+
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -53,35 +53,35 @@ class MilestonesView extends StatelessWidget {
                 _buildSectionTitle('Daily Streaks', theme),
                 const SizedBox(height: 20),
                 _buildDailyStreaks(controller, theme),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // WEEKLY STREAKS
                 _buildSectionTitle('Weekly Streaks', theme),
                 const SizedBox(height: 20),
                 _buildWeeklyStreaks(controller, theme),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // MY JOURNEY
                 _buildSectionTitle('My Journey', theme),
                 const SizedBox(height: 20),
                 _buildMyJourney(controller, theme),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // FIRSTS
                 _buildSectionTitle('Firsts', theme),
                 const SizedBox(height: 20),
                 _buildFirsts(controller, theme),
-                
+
                 const SizedBox(height: 40),
-                
+
                 // ENGAGEMENT
                 _buildSectionTitle('Engagement', theme),
                 const SizedBox(height: 20),
                 _buildEngagement(controller, theme),
-                
+
                 const SizedBox(height: 40),
               ],
             ),
@@ -90,7 +90,7 @@ class MilestonesView extends StatelessWidget {
       },
     );
   }
-  
+
   Widget _buildSectionTitle(String title, AppTheme theme) {
     return Text(
       title,
@@ -101,7 +101,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// DAILY STREAKS - Hexagons
   Widget _buildDailyStreaks(MilestonesController controller, AppTheme theme) {
     return SizedBox(
@@ -112,7 +112,7 @@ class MilestonesView extends StatelessWidget {
         itemBuilder: (context, index) {
           final days = controller.dailyStreakMilestones[index];
           final isAchieved = controller.isDailyStreakAchieved(days);
-          
+
           return _buildBadgeItem(
             painter: HexagonBadgePainter(
               text: days.toString(),
@@ -127,7 +127,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// WEEKLY STREAKS - Circles
   Widget _buildWeeklyStreaks(MilestonesController controller, AppTheme theme) {
     return SizedBox(
@@ -138,7 +138,7 @@ class MilestonesView extends StatelessWidget {
         itemBuilder: (context, index) {
           final weeks = controller.weeklyStreakMilestones[index];
           final isAchieved = controller.isWeeklyStreakAchieved(weeks);
-          
+
           return _buildBadgeItem(
             painter: CircleBadgePainter(
               text: weeks.toString(),
@@ -153,7 +153,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// MY JOURNEY - Shields (without count badge)
   Widget _buildMyJourney(MilestonesController controller, AppTheme theme) {
     return SizedBox(
@@ -165,10 +165,10 @@ class MilestonesView extends StatelessWidget {
           final milestone = controller.journeyMilestones[index];
           final isAchieved = controller.isJourneyAchieved(milestone);
           final displayText = milestone == 'First' ? '1' : milestone.toString();
-          final label = milestone == 'First' 
-              ? 'First Session' 
+          final label = milestone == 'First'
+              ? 'First Session'
               : '$milestone Sessions';
-          
+
           // Gradient for first session (achieved)
           List<Color>? gradientColors;
           if (isAchieved && milestone == 'First') {
@@ -178,7 +178,7 @@ class MilestonesView extends StatelessWidget {
               const Color(0xFFB8956A), // Tan
             ];
           }
-          
+
           return _buildJourneyBadgeItem(
             painter: ShieldBadgePainter(
               text: displayText,
@@ -193,7 +193,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// FIRSTS SECTION - Horizontal Scroll
   Widget _buildFirsts(MilestonesController controller, AppTheme theme) {
     final firstsItems = [
@@ -209,35 +209,35 @@ class MilestonesView extends StatelessWidget {
         isCompleted: controller.hasCompletedFirstCourseSession.value,
         theme: theme,
       ),
-      
+
       _buildIconBadge(
         icon: Icons.self_improvement,
         label: 'First Single',
         isCompleted: false,
         theme: theme,
       ),
-      
+
       _buildIconBadge(
         icon: Icons.lightbulb_outline,
         label: 'First Talk',
         isCompleted: false,
         theme: theme,
       ),
-      
+
       _buildIconBadge(
         painter: CrescentMoonPainter(isCompleted: false),
         label: 'First Sleep',
         isCompleted: false,
         theme: theme,
       ),
-      
+
       _buildIconBadge(
         icon: Icons.timer_outlined,
         label: 'First Unguided Timer',
         isCompleted: false,
         theme: theme,
       ),
-      
+
       _buildIconBadge(
         icon: Icons.menu_book_outlined,
         label: 'The Basics',
@@ -245,7 +245,7 @@ class MilestonesView extends StatelessWidget {
         theme: theme,
       ),
     ];
-    
+
     return SizedBox(
       height: 120,
       child: ListView.builder(
@@ -260,7 +260,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// ENGAGEMENT SECTION - Horizontal Scroll
   Widget _buildEngagement(MilestonesController controller, AppTheme theme) {
     final engagementItems = [
@@ -276,7 +276,7 @@ class MilestonesView extends StatelessWidget {
         isCompleted: controller.hasSharedGuestPass.value,
         theme: theme,
       ),
-      
+
       // Add a Favourite - Heart (with darker gradient)
       _buildIconBadge(
         painter: HeartPainter(
@@ -294,7 +294,7 @@ class MilestonesView extends StatelessWidget {
         theme: theme,
       ),
     ];
-    
+
     return SizedBox(
       height: 120,
       child: ListView.builder(
@@ -309,7 +309,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Generic badge item with painter, label, and count
   Widget _buildBadgeItem({
     required CustomPainter painter,
@@ -323,13 +323,7 @@ class MilestonesView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 90,
-            height: 90,
-            child: CustomPaint(
-              painter: painter,
-            ),
-          ),
+          SizedBox(width: 90, height: 90, child: CustomPaint(painter: painter)),
           const SizedBox(height: 8),
           Text(
             label,
@@ -346,7 +340,7 @@ class MilestonesView extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
             decoration: BoxDecoration(
-              color: theme.textSecondary.withOpacity(0.3),
+              color: theme.textSecondary.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
@@ -362,7 +356,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Journey badge item (without count badge)
   Widget _buildJourneyBadgeItem({
     required CustomPainter painter,
@@ -375,13 +369,7 @@ class MilestonesView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 90,
-            height: 90,
-            child: CustomPaint(
-              painter: painter,
-            ),
-          ),
+          SizedBox(width: 90, height: 90, child: CustomPaint(painter: painter)),
           const SizedBox(height: 8),
           Text(
             label,
@@ -398,7 +386,7 @@ class MilestonesView extends StatelessWidget {
       ),
     );
   }
-  
+
   /// Icon badge with simple icons or custom painter
   Widget _buildIconBadge({
     CustomPainter? painter,
@@ -420,7 +408,7 @@ class MilestonesView extends StatelessWidget {
                 : Icon(
                     icon,
                     size: 60,
-                    color: theme.textSecondary.withOpacity(0.5),
+                    color: theme.textSecondary.withValues(alpha: 0.5),
                   ),
           ),
           const SizedBox(height: 8),

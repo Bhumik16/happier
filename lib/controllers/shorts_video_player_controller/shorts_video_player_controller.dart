@@ -8,7 +8,7 @@ import '../../core/services/favorites_service.dart';
 /// ====================
 /// SHORTS VIDEO PLAYER CONTROLLER
 /// ====================
-/// 
+///
 /// Manages video playback for shorts (Practice & Wisdom)
 
 class ShortsVideoPlayerController extends GetxController {
@@ -19,11 +19,7 @@ class ShortsVideoPlayerController extends GetxController {
   // REACTIVE STATE
   // ====================
 
-  final Rx<ShortModel> _short = ShortModel(
-    id: '',
-    title: '',
-    type: '',
-  ).obs;
+  final Rx<ShortModel> _short = ShortModel(id: '', title: '', type: '').obs;
 
   final RxBool _isLoading = true.obs;
   final RxBool _isPlaying = false.obs;
@@ -80,14 +76,15 @@ class ShortsVideoPlayerController extends GetxController {
         _short.value = args['short'] as ShortModel;
       }
 
-      _logger.i('🎬 Loading video for: ${_short.value.title} (ID: ${_short.value.id})');
+      _logger.i(
+        '🎬 Loading video for: ${_short.value.title} (ID: ${_short.value.id})',
+      );
 
       // Check favorite status
       await _checkFavoriteStatus();
 
       // Load video
       await _loadVideo();
-
     } catch (e) {
       _logger.e('❌ Error loading short: $e');
       _errorMessage.value = 'Failed to load video';
@@ -110,9 +107,9 @@ class ShortsVideoPlayerController extends GetxController {
     try {
       // ✅ Use only the video that's uploaded on Cloudinary
       final courseId = 'getting_started';
-      
+
       final videoUrl = CloudinaryService.getIntroVideoUrl(courseId);
-      
+
       _logger.i('🎯 Short ${short.id} → Video: $courseId');
       _logger.i('📹 Video URL: $videoUrl');
 
@@ -127,7 +124,7 @@ class ShortsVideoPlayerController extends GetxController {
       }
 
       _logger.i('🎥 Creating new video controller');
-      
+
       // Use .network() for video playback
       videoController = VideoPlayerController.network(videoUrl);
 
@@ -149,20 +146,22 @@ class ShortsVideoPlayerController extends GetxController {
       await videoController!.play();
       _isPlaying.value = true;
 
-      _logger.i('✅ Video playing! Duration: ${_totalDuration.value.inSeconds}s');
+      _logger.i(
+        '✅ Video playing! Duration: ${_totalDuration.value.inSeconds}s',
+      );
     } catch (e) {
       _logger.e('❌ Error loading video: $e');
       _errorMessage.value = 'Failed to load video';
-      
+
       Get.snackbar(
         'Video Error',
         'Could not load video. Please try again.',
         snackPosition: SnackPosition.BOTTOM,
         duration: const Duration(seconds: 3),
-        backgroundColor: Get.theme.colorScheme.error.withOpacity(0.8),
+        backgroundColor: Get.theme.colorScheme.error.withValues(alpha: 0.8),
         colorText: Get.theme.colorScheme.onError,
       );
-      
+
       rethrow;
     }
   }

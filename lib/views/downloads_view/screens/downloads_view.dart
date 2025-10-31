@@ -15,9 +15,9 @@ class DownloadsView extends GetView<DownloadsController> {
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
     }
-    
+
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -42,7 +42,7 @@ class DownloadsView extends GetView<DownloadsController> {
                 if (controller.downloadedItems.isEmpty) {
                   return const SizedBox.shrink();
                 }
-                
+
                 return Padding(
                   padding: const EdgeInsets.only(right: 4),
                   child: TextButton.icon(
@@ -70,17 +70,28 @@ class DownloadsView extends GetView<DownloadsController> {
                               },
                               child: const Text(
                                 'Clear All',
-                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
                         ),
                       );
                     },
-                    icon: const Icon(Icons.delete_sweep, color: Colors.red, size: 18),
+                    icon: const Icon(
+                      Icons.delete_sweep,
+                      color: Colors.red,
+                      size: 18,
+                    ),
                     label: const Text(
                       'Clear All',
-                      style: TextStyle(color: Colors.red, fontWeight: FontWeight.w600, fontSize: 13),
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                      ),
                     ),
                   ),
                 );
@@ -115,7 +126,7 @@ class DownloadsView extends GetView<DownloadsController> {
             Icon(
               Icons.cloud_download,
               size: 80,
-              color: theme.textSecondary.withOpacity(0.5),
+              color: theme.textSecondary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 30),
             Text(
@@ -135,9 +146,15 @@ class DownloadsView extends GetView<DownloadsController> {
 
   Widget _buildDownloadsList(AppTheme theme) {
     // Separate downloads by type
-    final courses = controller.downloadedItems.where((e) => e.value['type'] == 'course_session').toList();
-    final sleeps = controller.downloadedItems.where((e) => e.value['type'] == 'sleep').toList();
-    final podcasts = controller.downloadedItems.where((e) => e.value['type'] == 'podcast').toList();
+    final courses = controller.downloadedItems
+        .where((e) => e.value['type'] == 'course_session')
+        .toList();
+    final sleeps = controller.downloadedItems
+        .where((e) => e.value['type'] == 'sleep')
+        .toList();
+    final podcasts = controller.downloadedItems
+        .where((e) => e.value['type'] == 'podcast')
+        .toList();
 
     return SingleChildScrollView(
       child: Column(
@@ -150,66 +167,68 @@ class DownloadsView extends GetView<DownloadsController> {
             decoration: BoxDecoration(
               color: theme.cardColor,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: theme.borderColor,
-                width: 1,
-              ),
+              border: Border.all(color: theme.borderColor, width: 1),
             ),
-            child: Obx(() => Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: const Icon(
-                    Icons.storage,
-                    color: Colors.blue,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Total Storage Used',
-                        style: TextStyle(
-                          color: theme.textSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        controller.totalStorage.value,
-                        style: TextStyle(
-                          color: theme.textPrimary,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    '${controller.downloadedItems.length} ${controller.downloadedItems.length == 1 ? 'item' : 'items'}',
-                    style: const TextStyle(
-                      color: Colors.green,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+            child: Obx(
+              () => Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: Colors.blue.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: const Icon(
+                      Icons.storage,
+                      color: Colors.blue,
+                      size: 24,
                     ),
                   ),
-                ),
-              ],
-            )),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Total Storage Used',
+                          style: TextStyle(
+                            color: theme.textSecondary,
+                            fontSize: 12,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          controller.totalStorage.value,
+                          style: TextStyle(
+                            color: theme.textPrimary,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.green.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      '${controller.downloadedItems.length} ${controller.downloadedItems.length == 1 ? 'item' : 'items'}',
+                      style: const TextStyle(
+                        color: Colors.green,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
 
           // SECTION 1: COURSES
@@ -231,7 +250,9 @@ class DownloadsView extends GetView<DownloadsController> {
                 ],
               ),
             ),
-            ...courses.map((entry) => _buildDownloadItem(entry.key, entry.value, theme)),
+            ...courses.map(
+              (entry) => _buildDownloadItem(entry.key, entry.value, theme),
+            ),
             const SizedBox(height: 8),
           ],
 
@@ -241,7 +262,11 @@ class DownloadsView extends GetView<DownloadsController> {
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 12),
               child: Row(
                 children: [
-                  const Icon(Icons.nightlight_round, color: Colors.purple, size: 20),
+                  const Icon(
+                    Icons.nightlight_round,
+                    color: Colors.purple,
+                    size: 20,
+                  ),
                   const SizedBox(width: 8),
                   Text(
                     'Sleep Audios (${sleeps.length})',
@@ -254,7 +279,9 @@ class DownloadsView extends GetView<DownloadsController> {
                 ],
               ),
             ),
-            ...sleeps.map((entry) => _buildDownloadItem(entry.key, entry.value, theme)),
+            ...sleeps.map(
+              (entry) => _buildDownloadItem(entry.key, entry.value, theme),
+            ),
             const SizedBox(height: 8),
           ],
 
@@ -277,7 +304,9 @@ class DownloadsView extends GetView<DownloadsController> {
                 ],
               ),
             ),
-            ...podcasts.map((entry) => _buildDownloadItem(entry.key, entry.value, theme)),
+            ...podcasts.map(
+              (entry) => _buildDownloadItem(entry.key, entry.value, theme),
+            ),
           ],
 
           const SizedBox(height: 100),
@@ -286,12 +315,16 @@ class DownloadsView extends GetView<DownloadsController> {
     );
   }
 
-  Widget _buildDownloadItem(String id, Map<String, dynamic> item, AppTheme theme) {
+  Widget _buildDownloadItem(
+    String id,
+    Map<String, dynamic> item,
+    AppTheme theme,
+  ) {
     final fileSize = item['fileSize'] as int?;
-    final fileSizeText = fileSize != null 
+    final fileSizeText = fileSize != null
         ? Get.find<DownloadsService>().formatBytes(fileSize)
         : '';
-    
+
     final downloadedAt = item['downloadedAt'] as String?;
     String dateText = '';
     if (downloadedAt != null) {
@@ -299,7 +332,7 @@ class DownloadsView extends GetView<DownloadsController> {
         final date = DateTime.parse(downloadedAt);
         final now = DateTime.now();
         final difference = now.difference(date);
-        
+
         if (difference.inDays == 0) {
           dateText = 'Today';
         } else if (difference.inDays == 1) {
@@ -313,7 +346,7 @@ class DownloadsView extends GetView<DownloadsController> {
         dateText = '';
       }
     }
-    
+
     // Get icon color based on type
     Color iconColor;
     if (item['type'] == 'course_session') {
@@ -325,7 +358,7 @@ class DownloadsView extends GetView<DownloadsController> {
     } else {
       iconColor = Colors.grey;
     }
-    
+
     return Card(
       color: theme.cardColor,
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -349,8 +382,8 @@ class DownloadsView extends GetView<DownloadsController> {
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
                           colors: [
-                            iconColor.withOpacity(0.3),
-                            iconColor.withOpacity(0.1),
+                            iconColor.withValues(alpha: 0.3),
+                            iconColor.withValues(alpha: 0.1),
                           ],
                         ),
                       ),
@@ -376,7 +409,7 @@ class DownloadsView extends GetView<DownloadsController> {
                 ],
               ),
               const SizedBox(width: 12),
-              
+
               // Content
               Expanded(
                 child: Column(
@@ -395,7 +428,7 @@ class DownloadsView extends GetView<DownloadsController> {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 4),
-                    
+
                     // Course title
                     if (item['courseTitle'] != null)
                       Text(
@@ -407,9 +440,9 @@ class DownloadsView extends GetView<DownloadsController> {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                    
+
                     const SizedBox(height: 6),
-                    
+
                     // Metadata row
                     Wrap(
                       spacing: 6,
@@ -417,13 +450,19 @@ class DownloadsView extends GetView<DownloadsController> {
                       children: [
                         if (item['type'] != null)
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
                             decoration: BoxDecoration(
-                              color: iconColor.withOpacity(0.2),
+                              color: iconColor.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(4),
                             ),
                             child: Text(
-                              item['type'].toString().toUpperCase().replaceAll('_', ' '),
+                              item['type'].toString().toUpperCase().replaceAll(
+                                '_',
+                                ' ',
+                              ),
                               style: TextStyle(
                                 color: iconColor,
                                 fontSize: 9,
@@ -435,7 +474,7 @@ class DownloadsView extends GetView<DownloadsController> {
                           Text(
                             fileSizeText,
                             style: TextStyle(
-                              color: theme.textSecondary.withOpacity(0.7),
+                              color: theme.textSecondary.withValues(alpha: 0.7),
                               fontSize: 10,
                             ),
                           ),
@@ -443,7 +482,7 @@ class DownloadsView extends GetView<DownloadsController> {
                           Text(
                             dateText,
                             style: TextStyle(
-                              color: theme.textSecondary.withOpacity(0.7),
+                              color: theme.textSecondary.withValues(alpha: 0.7),
                               fontSize: 10,
                             ),
                           ),
@@ -452,10 +491,14 @@ class DownloadsView extends GetView<DownloadsController> {
                   ],
                 ),
               ),
-              
+
               // Delete button
               IconButton(
-                icon: const Icon(Icons.delete_outline, color: Colors.red, size: 22),
+                icon: const Icon(
+                  Icons.delete_outline,
+                  color: Colors.red,
+                  size: 22,
+                ),
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 onPressed: () {
@@ -482,7 +525,10 @@ class DownloadsView extends GetView<DownloadsController> {
                           },
                           child: const Text(
                             'Delete',
-                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ],

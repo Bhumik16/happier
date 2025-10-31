@@ -19,11 +19,7 @@ class OnboardingView extends StatelessWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              Color(0xFF667EEA),
-              Color(0xFF764BA2),
-              Color(0xFFF093FB),
-            ],
+            colors: [Color(0xFF667EEA), Color(0xFF764BA2), Color(0xFFF093FB)],
           ),
         ),
         child: SafeArea(
@@ -39,11 +35,11 @@ class OnboardingView extends StatelessWidget {
                   width: 140,
                   height: 140,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
+                        color: Colors.black.withValues(alpha: 0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -84,7 +80,7 @@ class OnboardingView extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 18,
-                    color: Colors.white.withOpacity(0.95),
+                    color: Colors.white.withValues(alpha: 0.95),
                     height: 1.5,
                     fontWeight: FontWeight.w300,
                   ),
@@ -159,7 +155,7 @@ class OnboardingView extends StatelessWidget {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12,
-                          color: Colors.white.withOpacity(0.7),
+                          color: Colors.white.withValues(alpha: 0.7),
                           height: 1.5,
                         ),
                       ),
@@ -183,21 +179,17 @@ class OnboardingView extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
+            color: Colors.white.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: Colors.white,
-            size: 24,
-          ),
+          child: Icon(icon, color: Colors.white, size: 24),
         ),
         const SizedBox(width: 16),
         Text(
           text,
           style: TextStyle(
             fontSize: 16,
-            color: Colors.white.withOpacity(0.95),
+            color: Colors.white.withValues(alpha: 0.95),
             fontWeight: FontWeight.w500,
           ),
         ),

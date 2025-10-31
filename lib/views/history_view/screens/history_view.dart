@@ -14,9 +14,9 @@ class HistoryView extends GetView<HistoryController> {
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
     }
-    
+
     final AppTheme theme = AppTheme();
-    
+
     return GetBuilder<AppearanceController>(
       builder: (appearanceController) {
         return Scaffold(
@@ -73,7 +73,7 @@ class HistoryView extends GetView<HistoryController> {
             Icon(
               Icons.history,
               size: 80,
-              color: theme.textSecondary.withOpacity(0.5),
+              color: theme.textSecondary.withValues(alpha: 0.5),
             ),
             const SizedBox(height: 30),
             Text(
@@ -95,14 +95,14 @@ class HistoryView extends GetView<HistoryController> {
     return Obx(() {
       final grouped = controller.groupedHistory;
       final monthYears = grouped.keys.toList();
-      
+
       return ListView.builder(
         padding: const EdgeInsets.symmetric(vertical: 16),
         itemCount: monthYears.length,
         itemBuilder: (context, index) {
           final monthYear = monthYears[index];
           final items = grouped[monthYear]!;
-          
+
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -118,10 +118,10 @@ class HistoryView extends GetView<HistoryController> {
                   ),
                 ),
               ),
-              
+
               // Items for this month
               ...items.map((item) => _buildHistoryItem(item, theme)).toList(),
-              
+
               const SizedBox(height: 8),
             ],
           );
@@ -135,20 +135,17 @@ class HistoryView extends GetView<HistoryController> {
     final title = item['title'] ?? 'Unknown';
     final subtitle = item['courseTitle'] ?? item['subtitle'] ?? 'Get Started';
     final thumbnailUrl = item['thumbnailUrl'] as String?;
-    
+
     return Obx(() {
       final isFavorite = controller.favoriteStatus[itemId] ?? false;
-      
+
       return InkWell(
         onTap: () => controller.playHistoryItem(item),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
             border: Border(
-              bottom: BorderSide(
-                color: theme.dividerColor,
-                width: 1,
-              ),
+              bottom: BorderSide(color: theme.dividerColor, width: 1),
             ),
           ),
           child: Row(
@@ -178,7 +175,7 @@ class HistoryView extends GetView<HistoryController> {
                 ),
               ),
               const SizedBox(width: 16),
-              
+
               // Title and Subtitle
               Expanded(
                 child: Column(
@@ -208,7 +205,7 @@ class HistoryView extends GetView<HistoryController> {
                   ],
                 ),
               ),
-              
+
               // Favorite Icon
               IconButton(
                 icon: Icon(

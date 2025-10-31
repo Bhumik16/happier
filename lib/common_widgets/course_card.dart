@@ -7,19 +7,16 @@ import '../data/models/course_model.dart';
 /// ====================
 /// COURSE CARD
 /// ====================
-/// 
+///
 /// Reusable card component for course items on Courses tab
 
 class CourseCard extends StatelessWidget {
   final CourseModel course;
   final VoidCallback onTap;
   final AppTheme _theme = AppTheme();
-  
-  CourseCard({
-    Key? key,
-    required this.course,
-    required this.onTap,
-  }) : super(key: key);
+
+  CourseCard({Key? key, required this.course, required this.onTap})
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +29,7 @@ class CourseCard extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 16),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                _theme.cardShadow,
-              ],
+              boxShadow: [_theme.cardShadow],
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(16),
@@ -43,10 +38,10 @@ class CourseCard extends StatelessWidget {
                 children: [
                   // Background Image
                   _buildBackground(),
-                  
+
                   // Gradient Overlay (dark for text readability - stays same in both themes)
                   _buildGradientOverlay(),
-                  
+
                   // Content
                   _buildContent(),
                 ],
@@ -57,33 +52,29 @@ class CourseCard extends StatelessWidget {
       },
     );
   }
-  
+
   // ====================
   // BACKGROUND
   // ====================
-  
+
   Widget _buildBackground() {
     if (course.hasImage && course.imageUrl != null) {
       return Image.asset(
         course.imageUrl!,
         fit: BoxFit.cover,
         errorBuilder: (context, error, stackTrace) {
-          return Container(
-            color: _theme.cardColor,
-          );
+          return Container(color: _theme.cardColor);
         },
       );
     } else {
-      return Container(
-        color: _theme.cardColor,
-      );
+      return Container(color: _theme.cardColor);
     }
   }
-  
+
   // ====================
   // GRADIENT OVERLAY
   // ====================
-  
+
   Widget _buildGradientOverlay() {
     // ✅ Dark gradient stays the same for both themes
     // This ensures text is readable on the image
@@ -92,8 +83,8 @@ class CourseCard extends StatelessWidget {
         gradient: LinearGradient(
           colors: [
             Colors.transparent,
-            Colors.black.withOpacity(0.3),
-            Colors.black.withOpacity(0.7),
+            Colors.black.withValues(alpha: 0.3),
+            Colors.black.withValues(alpha: 0.7),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -102,11 +93,11 @@ class CourseCard extends StatelessWidget {
       ),
     );
   }
-  
+
   // ====================
   // CONTENT
   // ====================
-  
+
   Widget _buildContent() {
     return Padding(
       padding: const EdgeInsets.all(24),
@@ -114,7 +105,7 @@ class CourseCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Spacer(),
-          
+
           // Subtitle (if exists)
           if (course.subtitle != null) ...[
             Text(
@@ -130,7 +121,7 @@ class CourseCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
           ],
-          
+
           // Title
           Text(
             course.title,
@@ -143,9 +134,9 @@ class CourseCard extends StatelessWidget {
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
           ),
-          
+
           const SizedBox(height: 16),
-          
+
           // Instructor
           Text(
             'Guided by ${course.instructor}',
