@@ -569,7 +569,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Developer
 
-**Bhumik Patel**
+**Bhumik Gianani**
 
 - GitHub: [@Bhumik16](https://github.com/Bhumik16)
 - Email: bhumikstudent1608@gmail.com
