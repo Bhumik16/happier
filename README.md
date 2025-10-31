@@ -48,19 +48,28 @@ This project follows **Clean Architecture** principles with clear separation of 
 
 ```
 lib/
-├── common_widgets/          # Reusable UI components
-├── controllers/             # Business logic (GetX Controllers)
+├── common_widgets/          # Reusable UI components (cards, buttons, etc.)
+├── controllers/             # Business logic (GetX Controllers with bindings)
 ├── core/
-│   ├── config/             # App configuration
-│   ├── constants/          # App constants
-│   ├── routes/             # Navigation routes
-│   ├── services/           # Core services (Auth, Analytics, etc.)
-│   ├── theme/              # Theme configuration
-│   └── utils/              # Utility functions
+│   ├── config/             # App configuration (Cloudinary, etc.)
+│   ├── constants/          # App constants and colors
+│   ├── routes/             # Navigation routes (app_pages.dart, app_routes.dart)
+│   ├── services/           # Core services (Auth, Cloudinary, Downloads, History)
+│   ├── theme/              # Theme configuration (dark/light mode)
+│   └── utils/              # Utility functions (navigation helpers, etc.)
 ├── data/
-│   └── models/             # Data models (Hive entities)
+│   └── models/             # Data models (Hive entities for local storage)
 ├── repository/             # Repository pattern implementation
-├── views/                  # UI screens
+├── views/                  # UI screens (each with screens/ and widgets/ folders)
+│   ├── splash_view/
+│   │   ├── screens/
+│   │   └── widgets/
+│   ├── main_scaffold/      # Main app scaffold with bottom navigation
+│   │   ├── screens/
+│   │   └── widgets/
+│   └── [38+ more views]/
+├── firebase_options.dart
+├── get_it.dart             # Dependency injection setup
 └── main.dart               # App entry point
 ```
 
@@ -147,8 +156,8 @@ lib/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/happier-meditation.git
-   cd happier-meditation
+   git clone https://github.com/Bhumik16/happier.git
+   cd happier
    ```
 
 2. **Install dependencies**
@@ -321,45 +330,70 @@ happier_meditation/
 ├── ios/                     # iOS native code
 ├── lib/
 │   ├── common_widgets/      # Reusable UI components
-│   │   ├── meditation_card.dart
+│   │   ├── bottom_nav_bar.dart
 │   │   ├── course_card.dart
+│   │   ├── meditation_card.dart
 │   │   ├── single_card.dart
-│   │   └── ...
+│   │   ├── podcast_card.dart
+│   │   └── practice_video_card.dart
 │   │
 │   ├── controllers/         # GetX Controllers (Business Logic)
+│   │   ├── splash_controller/
 │   │   ├── auth_controller/
 │   │   ├── home_controller/
-│   │   ├── account_controller/
-│   │   └── ...
+│   │   ├── courses_controller/
+│   │   ├── chatbot_controller/
+│   │   ├── downloads_controller/
+│   │   ├── history_controller/
+│   │   ├── settings_controller/
+│   │   └── [20+ more controllers]/
 │   │
 │   ├── core/
 │   │   ├── config/          # App configuration
-│   │   ├── constants/       # Constants
+│   │   │   └── cloudinary_config.dart
+│   │   ├── constants/       # App constants
+│   │   │   └── app_colors.dart
 │   │   ├── routes/          # Navigation routes
+│   │   │   ├── app_pages.dart
+│   │   │   └── app_routes.dart
 │   │   ├── services/        # Core services
 │   │   │   ├── auth_service.dart
 │   │   │   ├── cloudinary_service.dart
 │   │   │   ├── downloads_service.dart
-│   │   │   └── ...
+│   │   │   └── history_service.dart
 │   │   ├── theme/           # Theme configuration
+│   │   │   └── app_theme.dart
 │   │   └── utils/           # Utility functions
+│   │       └── navigation_helper.dart
 │   │
 │   ├── data/
 │   │   └── models/          # Data models (Hive entities)
 │   │       ├── meditation_model.dart
 │   │       ├── course_model.dart
-│   │       └── ...
+│   │       └── [10+ more models]
 │   │
 │   ├── repository/          # Repository layer
 │   │   ├── meditation_repository/
 │   │   ├── course_repository/
-│   │   └── ...
+│   │   └── [5+ more repositories]
 │   │
-│   ├── views/               # UI Screens
+│   ├── views/               # UI Screens (39 view folders)
 │   │   ├── splash_view/
+│   │   │   └── screens/
+│   │   ├── main_scaffold/   # Main app with bottom navigation
+│   │   │   ├── screens/
+│   │   │   └── widgets/
 │   │   ├── home_view/
-│   │   ├── account_view/
-│   │   └── ...
+│   │   │   ├── screens/
+│   │   │   └── widgets/
+│   │   ├── courses_view/
+│   │   │   ├── screens/
+│   │   │   └── widgets/
+│   │   ├── chatbot_view/
+│   │   │   ├── screens/
+│   │   │   └── widgets/
+│   │   └── [34+ more views]/
+│   │       └── Each with screens/ and widgets/ folders
 │   │
 │   ├── firebase_options.dart
 │   ├── get_it.dart          # Dependency injection setup
@@ -535,10 +569,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👨‍💻 Developer
 
-**Your Name**
+**Bhumik Patel**
 
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
+- GitHub: [@Bhumik16](https://github.com/Bhumik16)
+- Email: bhumikstudent1608@gmail.com
 
 ---
 
@@ -555,7 +589,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-For support, email your.email@example.com or open an issue in the repository.
+For support, email bhumikstudent1608@gmail.com or open an issue in the repository.
 
 ---
 
