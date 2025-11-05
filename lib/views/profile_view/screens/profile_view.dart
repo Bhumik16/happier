@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'dart:math' as math;
 import '../../../core/routes/app_routes.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../controllers/appearance_controller/appearance_controller.dart';
+import '../../../controllers/profile_controller/profile_controller.dart';
 import '../../../core/utils/navigation_helper.dart';
 
 class ProfileView extends StatefulWidget {
@@ -13,22 +15,61 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileViewState extends State<ProfileView> with WidgetsBindingObserver {
   final PageController _pageController = PageController();
   final AppTheme _theme = AppTheme();
+  final Logger _logger = Logger();
   int _currentPage = 0;
 
   @override
   void initState() {
     super.initState();
-    // Ensure AppearanceController is initialized
+    WidgetsBinding.instance.addObserver(this);
+
+    // Ensure controllers are initialized
     if (!Get.isRegistered<AppearanceController>()) {
       Get.put(AppearanceController());
+    }
+    if (!Get.isRegistered<ProfileController>()) {
+      Get.put(ProfileController());
+    }
+
+    // Initial refresh
+    _refreshStats();
+  }
+
+  @override
+  void didUpdateWidget(ProfileView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Refresh stats when widget updates
+    _refreshStats();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh stats when dependencies change (e.g., returning from video player)
+    _refreshStats();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // Refresh when app comes back to foreground
+      _refreshStats();
+    }
+  }
+
+  void _refreshStats() {
+    if (Get.isRegistered<ProfileController>()) {
+      _logger.i('🔄 Refreshing profile stats...');
+      Get.find<ProfileController>().refreshStats();
     }
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pageController.dispose();
     super.dispose();
   }
@@ -111,73 +152,86 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Widget _buildGradientStatsCard() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              Color(0xFFE066D7), // Pink
-              Color(0xFFFF6B6B), // Orange-Red
-              Color(0xFFFF8E53), // Orange
+    final profileController = Get.find<ProfileController>();
+
+    return Obx(() {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFE066D7), // Pink
+                Color(0xFFFF6B6B), // Orange-Red
+                Color(0xFFFF8E53), // Orange
+              ],
+            ),
+          ),
+          child: Column(
+            children: [
+              // Top circular text with days
+              SizedBox(
+                height: 250,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    // Circular text "Mindful Days"
+                    CustomPaint(
+                      size: const Size(200, 200),
+                      painter: CircularTextPainter(
+                        text: "Mindful Days Mindful Days",
+                        radius: 100,
+                      ),
+                    ),
+                    // Center number (days count) - NOW DYNAMIC
+                    Text(
+                      '${profileController.mindfulDays}',
+                      style: const TextStyle(
+                        fontSize: 80,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Bottom stats section
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: _theme.cardColor,
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(16),
+                    bottomRight: Radius.circular(16),
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildStatItem(
+                      '${profileController.totalSessions}',
+                      'Total\nSessions',
+                    ),
+                    _buildStatItem(
+                      '${profileController.totalMinutes}',
+                      'Total\nMinutes',
+                    ),
+                    _buildStatItem(
+                      '${profileController.weeklyStreak}',
+                      'Weekly\nStreak',
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-        child: Column(
-          children: [
-            // Top circular text with days
-            SizedBox(
-              height: 250,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Circular text "Mindful Days"
-                  CustomPaint(
-                    size: const Size(200, 200),
-                    painter: CircularTextPainter(
-                      text: "Mindful Days Mindful Days",
-                      radius: 100,
-                    ),
-                  ),
-                  // Center number (days count)
-                  const Text(
-                    '0',
-                    style: TextStyle(
-                      fontSize: 80,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Bottom stats section
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: _theme.cardColor,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  _buildStatItem('0', 'Total\nSessions'),
-                  _buildStatItem('0', 'Total\nMinutes'),
-                  _buildStatItem('0', 'Weekly\nStreak'),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildStatItem(String value, String label) {

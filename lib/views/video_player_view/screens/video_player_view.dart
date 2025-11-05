@@ -140,16 +140,42 @@ class VideoPlayerView extends StatelessWidget {
             ),
           ),
 
-          // Favorite Button
-          IconButton(
-            onPressed: () {
-              Get.snackbar('Favorite', 'Favorites feature coming soon!');
-            },
-            icon: const Icon(
-              Icons.favorite_border,
-              color: Colors.white,
-              size: 28,
-            ),
+          Row(
+            children: [
+              // 🧪 TEST: Manual Complete Button
+              Container(
+                decoration: BoxDecoration(
+                  color: Colors.green.withOpacity(0.8),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    print('🧪 GREEN BUTTON CLICKED!');
+                    controller.manualComplete();
+                  },
+                  icon: const Icon(
+                    Icons.check_circle,
+                    color: Colors.white,
+                    size: 32,
+                  ),
+                  tooltip: 'Mark Complete',
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              // Favorite Button
+              IconButton(
+                onPressed: () {
+                  Get.snackbar('Favorite', 'Favorites feature coming soon!');
+                },
+                icon: const Icon(
+                  Icons.favorite_border,
+                  color: Colors.white,
+                  size: 28,
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -30,4 +30,6 @@ class AppRoutes {
   static const String userOnboarding = '/user-onboarding';
   static const String chatbot = '/chatbot';
   static const String search = '/search';
+  static const String teacherProfile = '/teacher-profile';
+  static const String recommendedCourses = '/recommended-courses';
 }

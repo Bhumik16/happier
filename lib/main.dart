@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:logger/logger.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'firebase_options.dart';
 import 'get_it.dart'; // ✅ ADDED - GetIt setup
 import 'core/services/cloudinary_service.dart';
 import 'core/services/downloads_service.dart';
 import 'core/services/history_service.dart';
+import 'core/services/user_stats_service.dart';
 import 'core/config/cloudinary_config.dart';
 import 'core/routes/app_pages.dart';
 import 'core/routes/app_routes.dart';
@@ -21,6 +23,10 @@ final Logger _logger = Logger();
 Future<void> main() async {
   // Ensure Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
+
+  // ✅ Initialize Hive FIRST
+  await Hive.initFlutter();
+  _logger.i('📦 Hive initialized\n');
 
   // ✅ ADDED - Setup dependency injection first
   await setupDependencyInjection();
@@ -61,7 +67,8 @@ Future<void> main() async {
   try {
     Get.put(DownloadsService());
     Get.put(HistoryService());
-    _logger.i('✅ Downloads and History services initialized\n');
+    await UserStatsService().init(); // ✅ Initialize UserStatsService
+    _logger.i('✅ Downloads, History, and UserStats services initialized\n');
   } catch (e) {
     _logger.e('❌ Error initializing services: $e\n');
   }
@@ -87,7 +94,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFF0A0E21),
         primaryColor: const Color(0xFF4A90E2),
       ),
-      initialRoute: AppRoutes.splash,
+      initialRoute: AppRoutes.splash, // ✅ Always start with splash screen
       getPages: AppPages.routes,
       // ✅ REMOVED: initialBinding: AuthBindings() - Let splash handle initialization
     );

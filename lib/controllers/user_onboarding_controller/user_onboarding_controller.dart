@@ -126,8 +126,10 @@ class UserOnboardingController extends GetxController {
     try {
       final prefs = await SharedPreferences.getInstance();
 
-      // Mark that user has seen onboarding
+      // Mark that user has seen onboarding AND completed it
       await prefs.setBool('hasSeenOnboarding', true);
+      await prefs.setBool('hasCompletedOnboarding', true);
+      _logger.i('✅ Set onboarding flags to true');
 
       // Save their preferences
       if (meditationExperience.value.isNotEmpty) {

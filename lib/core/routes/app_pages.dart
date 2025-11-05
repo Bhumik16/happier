@@ -30,6 +30,8 @@ import '../../views/downloads_settings_view/screens/downloads_settings_view.dart
 import '../../views/appearance_view/screens/appearance_view.dart';
 import '../../views/chatbot_view/screens/chatbot_view.dart';
 import '../../views/search_view/screens/search_view.dart'; // ✅ ADDED FOR SEARCH
+import '../../views/teacher_profile_view/screens/teacher_profile_view.dart'; // ✅ ADDED FOR TEACHER PROFILE
+import '../../views/recommended_courses_view/screens/recommended_courses_view.dart'; // ✅ ADDED FOR RECOMMENDATIONS
 
 import '../../controllers/splash_controller/splash_bindings.dart';
 import '../../controllers/home_controller/home_bindings.dart';
@@ -61,13 +63,15 @@ import '../../controllers/downloads_settings_controller/downloads_settings_bindi
 import '../../controllers/appearance_controller/appearance_bindings.dart';
 import '../../controllers/chatbot_controller/chatbot_bindings.dart';
 import '../../controllers/search_controller/search_bindings.dart'; // ✅ ADDED FOR SEARCH
+import '../../controllers/teacher_profile_controller/teacher_profile_bindings.dart'; // ✅ ADDED FOR TEACHER PROFILE
+import '../../controllers/recommended_courses_controller/recommended_courses_bindings.dart'; // ✅ ADDED FOR RECOMMENDATIONS
 
 import 'app_routes.dart';
 
 /// ====================
 /// APP PAGES
 /// ====================
-/// 
+///
 /// GetX page routes configuration with smooth transitions
 
 class AppPages {
@@ -75,7 +79,7 @@ class AppPages {
   static const _defaultDuration = Duration(milliseconds: 300);
   static const _fastDuration = Duration(milliseconds: 250);
   static const _modalDuration = Duration(milliseconds: 400);
-  
+
   static final routes = [
     // ====================
     // SPLASH SCREEN (FIRST ROUTE!)
@@ -87,7 +91,7 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: _fastDuration,
     ),
-    
+
     // ====================
     // ⏭️ PURPLE LOGIN PAGE - COMMENTED OUT (NOT USED)
     // ====================
@@ -98,7 +102,7 @@ class AppPages {
     //   transition: Transition.fadeIn,
     //   transitionDuration: _defaultDuration,
     // ),
-    
+
     // ====================
     // USER ONBOARDING (FIRST TIME SETUP) ✅ ACTIVE
     // ====================
@@ -109,7 +113,7 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // MAIN SCAFFOLD (Home)
     // ====================
@@ -120,7 +124,7 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // COURSE DETAIL
     // ====================
@@ -131,7 +135,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // UNIFIED PLAYER (Main player)
     // ====================
@@ -142,7 +146,7 @@ class AppPages {
       transition: Transition.downToUp,
       transitionDuration: _modalDuration,
     ),
-    
+
     // ====================
     // FAVORITES/RECENTLY PLAYED LIST
     // ====================
@@ -153,7 +157,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // COLLECTION DETAIL
     // ====================
@@ -164,7 +168,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // SLEEP DETAIL
     // ====================
@@ -175,7 +179,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // SLEEP AUDIO PLAYER
     // ====================
@@ -186,7 +190,7 @@ class AppPages {
       transition: Transition.downToUp,
       transitionDuration: _modalDuration,
     ),
-    
+
     // ====================
     // SHORTS VIDEO PLAYER
     // ====================
@@ -197,7 +201,7 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: _fastDuration,
     ),
-    
+
     // ====================
     // WISDOM DETAIL
     // ====================
@@ -208,7 +212,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // PODCAST DETAIL
     // ====================
@@ -219,7 +223,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // PODCAST EPISODE DETAIL
     // ====================
@@ -230,7 +234,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // PODCAST AUDIO PLAYER
     // ====================
@@ -241,7 +245,7 @@ class AppPages {
       transition: Transition.downToUp,
       transitionDuration: _modalDuration,
     ),
-    
+
     // ====================
     // PROFILE
     // ====================
@@ -252,7 +256,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // PROFILE FAVORITES
     // ====================
@@ -262,7 +266,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // MILESTONES
     // ====================
@@ -273,7 +277,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // HISTORY
     // ====================
@@ -284,7 +288,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // DOWNLOADS
     // ====================
@@ -295,7 +299,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // SETTINGS
     // ====================
@@ -306,7 +310,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // ACCOUNT
     // ====================
@@ -317,7 +321,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // SUBSCRIPTION
     // ====================
@@ -328,7 +332,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // PREMIUM UPGRADE
     // ====================
@@ -339,7 +343,7 @@ class AppPages {
       transition: Transition.downToUp,
       transitionDuration: _modalDuration,
     ),
-    
+
     // ====================
     // NOTIFICATIONS
     // ====================
@@ -350,7 +354,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // DOWNLOADS SETTINGS
     // ====================
@@ -361,7 +365,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // APPEARANCE
     // ====================
@@ -372,7 +376,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // CHATBOT
     // ====================
@@ -383,7 +387,7 @@ class AppPages {
       transition: Transition.rightToLeft,
       transitionDuration: _defaultDuration,
     ),
-    
+
     // ====================
     // SEARCH ✅ ADDED
     // ====================
@@ -394,7 +398,29 @@ class AppPages {
       transition: Transition.fadeIn,
       transitionDuration: _fastDuration,
     ),
-    
+
+    // ====================
+    // TEACHER PROFILE ✅ ADDED
+    // ====================
+    GetPage(
+      name: AppRoutes.teacherProfile,
+      page: () => const TeacherProfileView(),
+      binding: TeacherProfileBindings(),
+      transition: Transition.rightToLeft,
+      transitionDuration: _defaultDuration,
+    ),
+
+    // ====================
+    // RECOMMENDED COURSES ✅ ADDED
+    // ====================
+    GetPage(
+      name: AppRoutes.recommendedCourses,
+      page: () => const RecommendedCoursesView(),
+      binding: RecommendedCoursesBindings(),
+      transition: Transition.rightToLeft,
+      transitionDuration: _defaultDuration,
+    ),
+
     // ====================
     // VIDEO PLAYER (Keep as backup)
     // ====================
@@ -405,7 +431,7 @@ class AppPages {
       transition: Transition.downToUp,
       transitionDuration: _modalDuration,
     ),
-    
+
     // ====================
     // AUDIO PLAYER (Keep as backup)
     // ====================

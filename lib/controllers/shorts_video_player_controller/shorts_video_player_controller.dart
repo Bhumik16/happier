@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 import '../../data/models/short_model.dart';
 import '../../core/services/cloudinary_service.dart';
 import '../../core/services/favorites_service.dart';
+import '../../core/services/user_stats_service.dart';
 
 /// ====================
 /// SHORTS VIDEO PLAYER CONTROLLER
@@ -27,6 +28,9 @@ class ShortsVideoPlayerController extends GetxController {
   final RxString _errorMessage = ''.obs;
   final Rx<Duration> _currentPosition = Duration.zero.obs;
   final Rx<Duration> _totalDuration = Duration.zero.obs;
+
+  // ✅ Tracking flag to prevent duplicate session tracking
+  bool _hasCompletedOnce = false;
 
   // ====================
   // GETTERS
@@ -176,11 +180,76 @@ class ShortsVideoPlayerController extends GetxController {
       _totalDuration.value = videoController!.value.duration;
       _isPlaying.value = videoController!.value.isPlaying;
 
+      // ✅ Check if near completion (95% or within 3 seconds)
+      if (!_hasCompletedOnce && _totalDuration.value.inSeconds > 0) {
+        final progress =
+            _currentPosition.value.inSeconds / _totalDuration.value.inSeconds;
+        final remaining =
+            _totalDuration.value.inSeconds - _currentPosition.value.inSeconds;
+
+        if (progress >= 0.95 || remaining <= 3) {
+          _logger.w(
+            '🎬 Short video near completion! Progress: ${(progress * 100).toStringAsFixed(1)}%',
+          );
+          _trackShortCompletion();
+        }
+      }
+
       // Check if video ended
       if (videoController!.value.position >= videoController!.value.duration) {
         _isPlaying.value = false;
         _logger.i('🏁 Video ended');
+
+        // ✅ Track completion if not already tracked
+        if (!_hasCompletedOnce) {
+          _trackShortCompletion();
+        }
       }
+    }
+  }
+
+  // ✅ Track short video completion
+  Future<void> _trackShortCompletion() async {
+    if (_hasCompletedOnce) return;
+
+    _hasCompletedOnce = true;
+    _logger.i('✅ Short video completed');
+
+    try {
+      final actualDurationMinutes = _totalDuration.value.inMinutes;
+      final actualDurationSeconds = _totalDuration.value.inSeconds;
+
+      _logger.i('🎯 Tracking short video completion...');
+      _logger.i(
+        '   Video duration: $actualDurationMinutes minutes ($actualDurationSeconds seconds)',
+      );
+
+      if (actualDurationMinutes > 0) {
+        await UserStatsService().recordSession(actualDurationMinutes);
+        _logger.i('✅ Short video tracked: $actualDurationMinutes minutes');
+
+        Get.snackbar(
+          '✅ Short Completed!',
+          '$actualDurationMinutes minutes added to your stats',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2),
+        );
+      } else if (actualDurationSeconds > 0) {
+        // If less than 1 minute, still count it as 1 minute
+        _logger.w(
+          '⚠️ Short video less than 1 minute (${actualDurationSeconds}s), tracking as 1 minute',
+        );
+        await UserStatsService().recordSession(1);
+
+        Get.snackbar(
+          '✅ Short Completed!',
+          '1 minute added to your stats',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 2),
+        );
+      }
+    } catch (e) {
+      _logger.e('❌ Error tracking short video: $e');
     }
   }
 

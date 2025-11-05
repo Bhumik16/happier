@@ -29,10 +29,10 @@ class AuthController extends GetxController {
   void onInit() {
     super.onInit();
     _logger.i('🔐 AuthController initialized');
-    
+
     // Listen to auth state changes
     _firebaseUser.bindStream(_authService.authStateChanges);
-    
+
     // React to auth changes
     ever(_firebaseUser, _handleAuthChanged);
   }
@@ -41,20 +41,30 @@ class AuthController extends GetxController {
   Future<void> _handleAuthChanged(User? user) async {
     if (user == null) {
       _logger.i('👤 User is signed out');
-      
-      // ✅ ALWAYS show user onboarding after sign out
-      _logger.i('🎬 Showing user onboarding');
-      Get.offAllNamed(AppRoutes.userOnboarding);
+
+      // ✅ Only navigate to onboarding if not already there or on splash
+      if (Get.currentRoute != AppRoutes.userOnboarding &&
+          Get.currentRoute != AppRoutes.splash) {
+        _logger.i('🎬 Showing user onboarding');
+        Get.offAllNamed(AppRoutes.userOnboarding);
+      }
     } else {
       _logger.i('👤 User is signed in: ${user.email}');
-      
-      // After successful login, save flags and go to main
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('hasSeenOnboarding', true);
-      await prefs.setBool('hasCompletedOnboarding', true);
-      
-      _logger.i('✅ Going to main app');
-      Get.offAllNamed(AppRoutes.main);
+
+      // ✅ Navigate to main if coming from onboarding (after login)
+      // Let SplashController handle navigation if we're on splash
+      if (Get.currentRoute == AppRoutes.userOnboarding) {
+        _logger.i('✅ Going to main app after login');
+        Get.offAllNamed(AppRoutes.main);
+      } else if (Get.currentRoute == AppRoutes.splash) {
+        _logger.i(
+          'ℹ️ On splash screen, letting SplashController handle navigation',
+        );
+      } else if (Get.currentRoute == AppRoutes.main) {
+        _logger.i('ℹ️ Already on main screen');
+      } else {
+        _logger.i('ℹ️ User already logged in, staying on ${Get.currentRoute}');
+      }
     }
   }
 

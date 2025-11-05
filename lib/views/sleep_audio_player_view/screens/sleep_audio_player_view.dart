@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../../controllers/sleep_audio_player_controller/sleep_audio_player_controller.dart';
 import '../../../core/constants/app_text_styles.dart';
-import '../../../core/utils/navigation_helper.dart';
 
 /// ====================
 /// SLEEP AUDIO PLAYER VIEW
@@ -55,7 +54,7 @@ class SleepAudioPlayerView extends StatelessWidget {
                           ),
                           onPressed: () {
                             controller.stopPlayback();
-                            NavigationHelper.goBackSimple();
+                            Get.back();
                           },
                         ),
 

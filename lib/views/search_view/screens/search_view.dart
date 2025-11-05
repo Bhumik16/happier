@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '../../../controllers/search_controller/search_controller.dart';
 import '../../../controllers/appearance_controller/appearance_controller.dart';
 import '../../../core/theme/app_theme.dart';
-import '../../../core/utils/navigation_helper.dart';
+import '../../../core/routes/app_routes.dart';
 
 class SearchView extends StatelessWidget {
   const SearchView({Key? key}) : super(key: key);
@@ -69,7 +69,18 @@ class SearchView extends StatelessWidget {
           // Back button
           IconButton(
             icon: Icon(Icons.arrow_back, color: theme.iconPrimary, size: 28),
-            onPressed: () => NavigationHelper.goBackSimple(),
+            onPressed: () {
+              // Close keyboard first
+              FocusScope.of(context).unfocus();
+              // Then navigate back
+              if (Navigator.of(context).canPop()) {
+                Navigator.of(context).pop();
+              } else if (Get.key.currentState?.canPop() ?? false) {
+                Get.back();
+              } else {
+                Get.offAllNamed(AppRoutes.main);
+              }
+            },
           ),
           const SizedBox(width: 8),
           // Search bar
@@ -151,13 +162,8 @@ class SearchView extends StatelessWidget {
   Widget _buildTeacherCard(Map<String, String> teacher, AppTheme theme) {
     return GestureDetector(
       onTap: () {
-        Get.snackbar(
-          'Teacher',
-          'Opening ${teacher['name']} profile',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: theme.cardColor,
-          colorText: theme.textPrimary,
-        );
+        // Navigate to teacher profile page
+        Get.toNamed('/teacher-profile', arguments: teacher['name']);
       },
       child: Container(
         width: 100,
@@ -235,13 +241,8 @@ class SearchView extends StatelessWidget {
   Widget _buildTopicItem(String topic, AppTheme theme) {
     return InkWell(
       onTap: () {
-        Get.snackbar(
-          'Topic',
-          'Opening $topic meditations',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: theme.cardColor,
-          colorText: theme.textPrimary,
-        );
+        // Navigate to recommended courses page
+        Get.toNamed('/recommended-courses', arguments: topic);
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
